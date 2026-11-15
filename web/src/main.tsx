@@ -14,18 +14,16 @@ import "./styles/people.css";
 import "./styles/assistant.css";
 import "./styles/public.css";
 import "./styles/case.css";
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import { AuthProvider } from "./auth/AuthContext";
-import { LangProvider } from "./i18n";
+import { hydrateRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import { Root } from "./Root";
+import type { Boot } from "./ssr/context";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <LangProvider>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </LangProvider>
-  </StrictMode>,
+// The server rendered this page and left what it fetched in window.__HADIR__; hydrate onto that HTML.
+const boot = (window as unknown as { __HADIR__?: Boot }).__HADIR__ ?? { data: {}, lang: "ar", sidebar: "open" };
+hydrateRoot(
+  document.getElementById("root")!,
+  <BrowserRouter>
+    <Root boot={boot} />
+  </BrowserRouter>,
 );

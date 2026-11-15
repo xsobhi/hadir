@@ -6,6 +6,7 @@ import { useAuth } from "../auth/AuthContext";
 import { PabbelButton } from "../components/public/PabbelButton";
 import { PublicBar } from "../components/public/PublicBar";
 import { useLang } from "../i18n";
+import { useTitle } from "../ssr/context";
 
 /** Sign in and sign up share one compact form; `mode` picks the fields and the endpoint. */
 export default function SignIn({ mode }: { mode: "in" | "up" }) {
@@ -17,6 +18,7 @@ export default function SignIn({ mode }: { mode: "in" | "up" }) {
   const [busy, setBusy] = useState(false);
   const [params] = useSearchParams();
   const pabbelError = params.get("error");
+  useTitle(`${(mode === "in" ? t.auth.signIn : t.auth.signUp).title} · ${t.product}`);
   if (user) return <Navigate to="/app" replace />;
   const s = mode === "in" ? t.auth.signIn : t.auth.signUp;
   const submit = async (e: FormEvent) => {

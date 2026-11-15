@@ -1,10 +1,11 @@
 import { BookOpen, Bot, CalendarCheck, Languages, Lightbulb, Users } from "kubai-icons-react";
-import { LogOut, Menu, Sparkles, X } from "lucide-react";
+import { LogOut, Menu, PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen, Sparkles, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import type { CourseItem } from "../api/types";
 import { useData } from "../api/useData";
 import { useAuth } from "../auth/AuthContext";
+import { setPrefCookie, useBoot, useTitle } from "../ssr/context";
 import { useLang } from "../i18n";
 import { Avatar } from "./Avatar";
 import { Mark } from "./Mark";
@@ -12,22 +13,32 @@ import { TONE_COLOR } from "./ui/Tile";
 
 const COURSE_TONES = ["#2563eb", "#7c3aed", "#0284c7", "#c2610c", "#e11d48", "#0e8a6a"];
 
+function CollapseIcon({ collapsed, rtl }: { collapsed: boolean; rtl: boolean }) {
+  // The sidebar sits on the right in Arabic and on the left in English.
+  const Icon = rtl ? (collapsed ? PanelRightOpen : PanelRightClose) : (collapsed ? PanelLeftOpen : PanelLeftClose);
+  return <Icon aria-hidden="true" />;
+}
+
 export function Shell({ title, children }: { title: string; children: ReactNode }) {
   const { t, lang, setLang, pick } = useLang();
   const { user, signOut } = useAuth();
   const [open, setOpen] = useState(false);
+  const boot = useBoot();
+  const [collapsed, setCollapsed] = useState(boot.sidebar === "collapsed");
+  const toggle = () => {
+    setPrefCookie("hadir_sidebar", collapsed ? "open" : "collapsed");
+    setCollapsed(!collapsed);
+  };
   const location = useLocation();
   const { data } = useData<{ courses: CourseItem[] }>("/api/courses");
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
-  useEffect(() => {
-    document.title = `${title} · ${t.product}`;
-  }, [title, t.product]);
+  useTitle(`${title} · ${t.product}`);
   const hoursLeft = user?.expiresAt ? Math.max(1, Math.round((Date.parse(user.expiresAt) - Date.now()) / 3.6e6)) : 0;
   const item = (to: string, label: string, Icon: typeof Users, tone: keyof typeof TONE_COLOR, end = false) => (
-    <NavLink to={to} end={end} className="nav-item" data-kubai-trigger>
-      <Icon size={22} color={TONE_COLOR[tone]} trigger="parent" />{label}
+    <NavLink to={to} end={end} className="nav-item" data-kubai-trigger title={label} aria-label={label}>
+      <Icon size={22} color={TONE_COLOR[tone]} trigger="parent" /><span className="nav-label">{label}</span>
     </NavLink>
   );
 
@@ -36,10 +47,12 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
       {item("/app", t.nav.today, CalendarCheck, "brand", true)}
       {item("/app/students", t.nav.students, Users, "violet")}
       {item("/app/assistant", t.nav.assistant, Bot, "amber")}
-      <p className="nav-group"><BookOpen size={16} color="#64748b" trigger="none" />{t.nav.courses}</p>
+      <p className="nav-group"><BookOpen size={16} color="#64748b" trigger="none" /><span className="nav-label">{t.nav.courses}</span></p>
       {(data?.courses ?? []).map((c, i) => (
-        <NavLink key={c.id} to={`/app/courses/${c.id}`} className="nav-item nav-course">
-          <span className="course-dot" style={{ background: COURSE_TONES[i % COURSE_TONES.length] }} />
+        <NavLink key={c.id} to={`/app/courses/${c.id}`} className="nav-item nav-course" title={pick(c.nameAr, c.nameEn)}
+          style={{ ["--course" as string]: COURSE_TONES[i % COURSE_TONES.length] }}>
+          <span className="course-dot" />
+          <span className="course-mini">{c.code.replace(/\D/g, "").slice(-3) || c.code.slice(0, 3)}</span>
           <span className="nav-course-name">{pick(c.nameAr, c.nameEn)}</span>
           <span className="nav-code">{c.code}</span>
         </NavLink>
@@ -51,7 +64,7 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
     <div className="side-foot">
       {item("/about", t.nav.caseStudy, Lightbulb, "sky")}
       <button type="button" className="nav-item" onClick={() => setLang(lang === "ar" ? "en" : "ar")} aria-label={t.languageLabel} data-kubai-trigger>
-        <Languages size={22} color={TONE_COLOR.blue} trigger="parent" />{t.language}
+        <Languages size={22} color={TONE_COLOR.blue} trigger="parent" /><span className="nav-label">{t.language}</span>
       </button>
       {user && (
         <div className="user-card">
@@ -69,9 +82,15 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
   );
 
   return (
-    <div className="shell">
+    <div className={collapsed ? "shell collapsed" : "shell"}>
       <aside className="sidebar">
-        <a href="/app" className="brand"><Mark size={40} /><span><strong>{t.product}</strong><span className="brand-line">{t.productLine}</span></span></a>
+        <div className="brand-row">
+          <a href="/app" className="brand"><Mark size={40} /><span className="nav-label"><strong>{t.product}</strong><span className="brand-line">{t.productLine}</span></span></a>
+          <button type="button" className="btn btn-ghost icon-btn collapse-btn" onClick={toggle} aria-expanded={!collapsed}
+            aria-label={collapsed ? t.nav.expand : t.nav.collapse} title={collapsed ? t.nav.expand : t.nav.collapse}>
+            <CollapseIcon collapsed={collapsed} rtl={lang === "ar"} />
+          </button>
+        </div>
         {nav}
         {foot}
       </aside>

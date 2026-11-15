@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AiSection } from "../components/case/AiSection";
 import { CertList } from "../components/case/CertList";
@@ -9,12 +8,13 @@ import { Avatar } from "../components/Avatar";
 import { PublicBar } from "../components/public/PublicBar";
 import { caseStudy } from "../content/case-study";
 import { useLang } from "../i18n";
+import { useTitle } from "../ssr/context";
 
 export default function CaseStudy() {
   const { lang, t } = useLang();
   const cs = caseStudy[lang];
   const l = labels[lang];
-  useEffect(() => { document.title = `${cs.title} · ${t.product}`; }, [cs.title, t.product]);
+  useTitle(`${cs.title} · ${t.product}`);
   return (
     <div className="public">
       <PublicBar />

@@ -12,6 +12,8 @@ export const app: typeof en = {
     signOut: "تسجيل الخروج",
     menu: "القائمة",
     close: "إغلاق",
+    collapse: "طيّ الشريط الجانبي",
+    expand: "توسيع الشريط الجانبي",
   },
   demoBanner: (hours: number) => `مساحة تجريبية ببيانات افتراضية، تُحذف بعد نحو ${hours} ساعة.`,
   language: "English",

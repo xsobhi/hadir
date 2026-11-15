@@ -58,3 +58,28 @@
 }
 @keyframes sheet-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 .nav > * { min-width: 0; }
+
+/* Collapsible sidebar: an icon rail of 84px; the choice lives in a cookie so the server renders it the same way. */
+.shell { transition: grid-template-columns 260ms var(--ease-out); }
+.brand-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding-bottom: 18px; }
+.brand-row .brand { padding: 2px 8px 0; min-width: 0; }
+.collapse-btn { flex: none; color: var(--text-3); }
+.course-mini { display: none; }
+.shell.collapsed { grid-template-columns: 84px minmax(0, 1fr); }
+.shell.collapsed .sidebar { padding: 18px 12px; align-items: stretch; }
+.shell.collapsed .nav-label, .shell.collapsed .nav-code, .shell.collapsed .nav-course-name,
+.shell.collapsed .user-text { display: none; }
+.shell.collapsed .brand-row { flex-direction: column; gap: 10px; }
+.shell.collapsed .brand { padding: 0; justify-content: center; }
+.shell.collapsed .nav-item { justify-content: center; padding: 6px 0; }
+.shell.collapsed .nav-group { justify-content: center; padding: 16px 0 6px; }
+.shell.collapsed .nav-course { min-height: 44px; }
+.shell.collapsed .course-dot { display: none; }
+.shell.collapsed .course-mini {
+  display: grid; place-items: center; width: 44px; height: 30px; border-radius: 10px; font-size: 12px; font-weight: 800;
+  color: var(--course); background: color-mix(in srgb, var(--course) 12%, #fff); direction: ltr;
+}
+.shell.collapsed .nav-item.active .course-mini { background: var(--course); color: #fff; }
+.shell.collapsed .user-card { flex-direction: column; padding: 8px 4px; }
+.nav-course { --course: var(--brand); }
+.course-dot { background: var(--course); }

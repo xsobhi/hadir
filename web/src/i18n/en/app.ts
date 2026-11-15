@@ -10,6 +10,8 @@ export const app = {
     signOut: "Sign out",
     menu: "Menu",
     close: "Close",
+    collapse: "Collapse sidebar",
+    expand: "Expand sidebar",
   },
   demoBanner: (hours: number) => `Demo workspace with sample data. It is deleted in about ${hours} h.`,
   language: "العربية",

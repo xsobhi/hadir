@@ -29,11 +29,15 @@ export default function Live() {
   const navigate = useNavigate();
   const { data, error, reload, setData } = useData<LiveState>(`/api/sessions/${id}`);
   const [last, setLast] = useState<Last>(null);
-  const [sound, setSound] = useState(() => localStorage.getItem("hadir.sound") !== "off");
+  const [sound, setSound] = useState(true);
   const busy = useRef(false);
   useEffect(() => {
-    localStorage.setItem("hadir.sound", sound ? "on" : "off");
-  }, [sound]);
+    setSound(localStorage.getItem("hadir.sound") !== "off");
+  }, []);
+  const toggleSound = () => {
+    localStorage.setItem("hadir.sound", sound ? "off" : "on");
+    setSound(!sound);
+  };
 
   const onCode = useCallback(async (code: string) => {
     if (busy.current) return;
@@ -81,7 +85,7 @@ export default function Live() {
           )}
         </div>
         <div className="actions">
-          <button type="button" className="btn icon-btn" onClick={() => setSound((s) => !s)} aria-pressed={sound} aria-label={t.live.sound} title={t.live.sound}>
+          <button type="button" className="btn icon-btn" onClick={toggleSound} aria-pressed={sound} aria-label={t.live.sound} title={t.live.sound}>
             {sound ? <Volume2 aria-hidden="true" /> : <VolumeX aria-hidden="true" />}
           </button>
           {data && !closed && <button type="button" className="btn btn-ghost btn-danger" onClick={() => void discard()}><Trash2 aria-hidden="true" />{t.live.discard}</button>}

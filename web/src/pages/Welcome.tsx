@@ -10,6 +10,7 @@ import { PublicBar } from "../components/public/PublicBar";
 import { ScanFragment } from "../components/public/ScanFragment";
 import { Tile, type Tone } from "../components/ui/Tile";
 import { useLang } from "../i18n";
+import { useTitle } from "../ssr/context";
 
 const POINTS: { icon: typeof ScanBarcode; tone: Tone }[] = [
   { icon: ScanBarcode, tone: "brand" }, { icon: TriangleAlert, tone: "amber" }, { icon: BotSparkle, tone: "violet" },
@@ -21,6 +22,7 @@ export default function Welcome() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
+  useTitle(`${t.product} · ${t.auth.welcome.title}`);
   if (user) return <Navigate to="/app" replace />;
   const demo = async () => {
     setBusy(true);
