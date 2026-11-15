@@ -13,7 +13,7 @@ OPTS=(-o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -o PubkeyAuthenti
 mkdir -p deploy/out
 tar -czf deploy/out/release.tgz --exclude='__pycache__' --exclude='backend/var' --exclude='backend/.env' \
   backend/hadir backend/requirements.txt web/dist deploy/windows
-sshpass -e ssh "${OPTS[@]}" "$U@$H" "powershell -NoProfile -Command New-Item -ItemType Directory -Force -Path C:\\hadir | Out-Null"
+sshpass -e ssh "${OPTS[@]}" "$U@$H" "if not exist C:\\hadir mkdir C:\\hadir"
 sshpass -e scp -q "${OPTS[@]}" deploy/out/release.tgz "$U@$H:C:/hadir/release.tgz"
 sshpass -e scp -q "${OPTS[@]}" deploy/windows/install.ps1 "$U@$H:C:/hadir/install.ps1"
 if [[ ${1:-} == --env ]]; then
