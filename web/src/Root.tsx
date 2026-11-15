@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import App from "./App";
 import { AuthProvider } from "./auth/AuthContext";
 import { LangProvider } from "./i18n";
+import { SmoothScroll } from "./motion/SmoothScroll";
 import { BootContext, type Boot } from "./ssr/context";
 
 /** The whole app below the router; the server wraps it in a StaticRouter, the browser in a BrowserRouter. */
@@ -11,7 +12,9 @@ export function Root({ boot }: { boot: Boot }) {
       <BootContext.Provider value={boot}>
         <LangProvider>
           <AuthProvider>
-            <App />
+            <SmoothScroll>
+              <App />
+            </SmoothScroll>
           </AuthProvider>
         </LangProvider>
       </BootContext.Provider>

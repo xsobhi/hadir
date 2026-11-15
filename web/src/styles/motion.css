@@ -1,0 +1,32 @@
+/* Motion: what GSAP reveals starts hidden only when scripts run and motion is welcome; the server's HTML is final. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.js-late) [data-reveal]:not([data-revealed]),
+  html.js:not(.js-late) [data-reveal][data-revealed] { opacity: 0; transform: translateY(22px); }
+  html.js:not(.js-late) .word-reveal .wr-word { opacity: 0; }
+}
+.wr-word { display: inline-block; will-change: transform, filter; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+/* Bars grow from their start edge on first paint (CSS only, so it plays even before hydration). */
+.absence-track span { transform-origin: right center; animation: bar-grow 900ms var(--ease-out) both; }
+[dir="ltr"] .absence-track span { transform-origin: left center; }
+@keyframes bar-grow { from { transform: scaleX(0); } }
+
+/* Buttons lift a little under the pointer; the primary one glows its brand colour. */
+.btn-primary, .btn-white, .hero-ghost { transition: transform 200ms var(--ease-out), box-shadow 200ms ease, background-color 160ms ease; }
+@media (hover: hover) {
+  .btn-primary:hover, .btn-white:hover { transform: translateY(-2px); }
+  .btn-primary:hover { box-shadow: 0 12px 24px -10px color-mix(in srgb, var(--brand) 70%, transparent); }
+}
+.card, .stat { transition: transform 260ms var(--ease-out), box-shadow 260ms ease; }
+@media (hover: hover) { a.row:hover .avatar, .row:hover .avatar { transform: scale(1.06); } }
+.avatar { transition: transform 220ms var(--ease-out); }
+
+/* React Bits SpotlightCard, mapped onto Hadir's surfaces. */
+.spotlight-card.point, .spotlight-card.cert { padding: 22px; border-radius: var(--radius-lg); }
+.auth-in { animation: auth-in 700ms var(--ease-out) both; }
+@keyframes auth-in { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
+.cert-list > li { display: grid; }
+.spotlight-card.cert { display: grid; gap: 14px; align-content: start; border: 0; }

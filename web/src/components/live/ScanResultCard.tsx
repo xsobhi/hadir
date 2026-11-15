@@ -1,6 +1,8 @@
 import { CircleAlert, CircleCheck, Clock3, Copy, ScanLine } from "lucide-react";
 import type { ScanResult } from "../../api/types";
+import { useRef } from "react";
 import { useLang } from "../../i18n";
+import { gsap, reducedMotion, useGSAP } from "../../motion/gsap";
 import { time } from "../../i18n/format";
 import { Avatar } from "../Avatar";
 
@@ -9,6 +11,14 @@ type Last = Omit<ScanResult, "state"> | { result: "closed" } | null;
 /** The last scan, large enough to read from across the desk: picture, words, icon and colour together. */
 export function ScanResultCard({ result }: { result: Last }) {
   const { t, pick } = useLang();
+  const root = useRef<HTMLDivElement>(null);
+  const key = result && "markedAt" in result ? `${result.result}-${result.student?.id ?? result.code}-${result.markedAt ?? ""}` : String(result?.result);
+  useGSAP(() => {
+    if (!result || !root.current || reducedMotion()) return;
+    // Each scan lands with a small bounce of the student's picture and a pop of the card.
+    gsap.fromTo(root.current, { scale: 0.94, y: 10 }, { scale: 1, y: 0, duration: 0.5, ease: "back.out(2.2)" });
+    gsap.fromTo(".avatar, .result-icon", { scale: 0.4, rotate: -12 }, { scale: 1, rotate: 0, duration: 0.7, ease: "elastic.out(1, 0.5)" });
+  }, { scope: root, dependencies: [key] });
   if (!result) return <div className="result result-idle"><ScanLine aria-hidden="true" className="result-icon" /><p>{t.live.noScans}</p></div>;
   if (result.result === "closed") return <div className="result result-problem"><CircleAlert className="result-icon" aria-hidden="true" /><p className="result-head">{t.live.result.closed}</p></div>;
   const r = result as Omit<ScanResult, "state">;
@@ -26,7 +36,7 @@ export function ScanResultCard({ result }: { result: Last }) {
     head = t.live.result.unknown; sub = t.live.result.unknownHint(r.code ?? "");
   }
   return (
-    <div className={`result result-${tone}`} role="status" aria-live="assertive" key={`${r.student?.id ?? r.code}-${r.markedAt ?? ""}-${r.result}`}>
+    <div ref={root} className={`result result-${tone}`} role="status" aria-live="assertive">
       {r.student ? <Avatar seed={r.student.number} gender={r.student.gender} size={64} /> : <Icon className="result-icon" aria-hidden="true" />}
       <div className="result-text">
         <p className="result-head"><Icon aria-hidden="true" />{head}</p>

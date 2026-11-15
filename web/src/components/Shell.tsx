@@ -1,6 +1,7 @@
 import { BookOpen, Bot, CalendarCheck, Languages, Lightbulb, Users } from "kubai-icons-react";
 import { LogOut, Menu, PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen, Sparkles, X } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useReveal } from "../motion/useReveal";
 import { NavLink, useLocation } from "react-router-dom";
 import type { CourseItem } from "../api/types";
 import { useData } from "../api/useData";
@@ -23,6 +24,8 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
   const { t, lang, setLang, pick } = useLang();
   const { user, signOut } = useAuth();
   const [open, setOpen] = useState(false);
+  const canvas = useRef<HTMLElement>(null);
+  useReveal(canvas);
   const boot = useBoot();
   const [collapsed, setCollapsed] = useState(boot.sidebar === "collapsed");
   const toggle = () => {
@@ -100,7 +103,7 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
         <button type="button" className="btn btn-ghost icon-btn" onClick={() => setOpen(true)} aria-label={t.nav.menu} aria-expanded={open}><Menu aria-hidden="true" /></button>
       </header>
       {open && (
-        <div className="sheet" role="dialog" aria-modal="true" aria-label={t.nav.menu}>
+        <div className="sheet" data-lenis-prevent role="dialog" aria-modal="true" aria-label={t.nav.menu}>
           <div className="sheet-head">
             <span className="brand"><Mark size={34} /><strong>{t.product}</strong></span>
             <button type="button" className="btn btn-ghost icon-btn" onClick={() => setOpen(false)} aria-label={t.nav.close}><X aria-hidden="true" /></button>
@@ -109,7 +112,7 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
           {foot}
         </div>
       )}
-      <main className="canvas">
+      <main className="canvas" ref={canvas}>
         {user?.isDemo && <p className="demo-banner"><Sparkles aria-hidden="true" />{t.demoBanner(hoursLeft)}</p>}
         {children}
       </main>

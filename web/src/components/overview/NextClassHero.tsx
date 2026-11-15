@@ -1,6 +1,8 @@
 import { IdBadge, ScanBarcode } from "kubai-icons-react";
 import { CalendarDays, Clock3, DoorOpen, Users } from "lucide-react";
+import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { gsap, reducedMotion, useGSAP } from "../../motion/gsap";
 import { api } from "../../api/client";
 import type { CourseItem } from "../../api/types";
 import { useLang } from "../../i18n";
@@ -10,6 +12,13 @@ import { day, time } from "../../i18n/format";
 export function NextClassHero({ next }: { next: CourseItem | null }) {
   const { t, lang, pick } = useLang();
   const navigate = useNavigate();
+  const root = useRef<HTMLElement>(null);
+  useGSAP(() => {
+    if (reducedMotion() || !root.current) return;
+    gsap.to(".hero-art svg", { y: -10, rotate: -2, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });
+    gsap.from(".hero-meta li", { opacity: 0, y: 10, duration: 0.5, stagger: 0.06, delay: 0.35, ease: "power2.out" });
+    gsap.from(".hero-start", { scale: 0.9, opacity: 0, duration: 0.7, delay: 0.55, ease: "back.out(2)" });
+  }, { scope: root, dependencies: [next?.id] });
   if (!next || !next.next) {
     return (
       <section className="hero-card hero-empty">
@@ -23,7 +32,7 @@ export function NextClassHero({ next }: { next: CourseItem | null }) {
     navigate(`/app/live/${id}`);
   };
   return (
-    <section className="hero-card" aria-labelledby="hero-h">
+    <section className="hero-card" ref={root} data-reveal aria-labelledby="hero-h">
       <div className="hero-copy">
         <p className="hero-eyebrow">{t.overview.nextClass}</p>
         <h2 id="hero-h">{pick(next.nameAr, next.nameEn)} <span className="hero-code">{next.code}-{next.section}</span></h2>

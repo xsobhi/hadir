@@ -1,0 +1,20 @@
+<service>
+  <id>HadirWeb</id>
+  <name>Hadir web (server-side rendering)</name>
+  <description>Renders hadir.xsobhi.com pages with React on 127.0.0.1:3071; data comes from the Hadir API on 3070.</description>
+  <executable>C:\Program Files\nodejs\node.exe</executable>
+  <arguments>C:\hadir\app\web\server.mjs</arguments>
+  <workingdirectory>C:\hadir\app\web</workingdirectory>
+  <env name="PORT" value="3071"/>
+  <env name="HADIR_API_ORIGIN" value="http://127.0.0.1:3070"/>
+  <env name="HADIR_WEB_DIST" value="C:\hadir\app\web\dist"/>
+  <env name="NODE_ENV" value="production"/>
+  <log mode="roll-by-size">
+    <sizeThreshold>10240</sizeThreshold>
+    <keepFiles>5</keepFiles>
+  </log>
+  <onfailure action="restart" delay="5 sec"/>
+  <startmode>Automatic</startmode>
+  <priority>BelowNormal</priority>
+  <stoptimeout>10 sec</stoptimeout>
+</service>

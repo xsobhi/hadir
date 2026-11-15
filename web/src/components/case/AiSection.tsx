@@ -13,8 +13,8 @@ export function AiSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
   return (
     <section className="cs-section" aria-labelledby="ai-h">
       <h2 id="ai-h" data-kubai-trigger><Tile icon={BotSparkle} tone="amber" size={52} />{l.ai}</h2>
-      <div className="cs-split"><h3>{l.graph}</h3><p className="cs-statement">{ai.summary}</p></div>
-      <div className="cs-columns cs-ai">
+      <div className="cs-split" data-reveal><h3>{l.graph}</h3><p className="cs-statement">{ai.summary}</p></div>
+      <div data-reveal className="cs-columns cs-ai">
         <AgentDiagram read={ar ? "قراءة" : "read"} write={ar ? "تعديل" : "write"} approve={ar ? "موافقة" : "approve"}
           decline={ar ? "رفض" : "decline"} answer={ar ? "إجابة" : "answer"} approved={ar ? "معتمدة" : "approved"} revise={ar ? "تعديل" : "revise"} />
         <dl className="cs-defs">
@@ -22,7 +22,7 @@ export function AiSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
         </dl>
       </div>
       <h3 className="cs-sub">{l.tools}</h3>
-      <div className="cs-table-wrap">
+      <div className="cs-table-wrap" data-reveal>
         <table className="cs-table">
           <thead><tr><th>{l.tools}</th><th>{l.kind}</th><th /></tr></thead>
           <tbody>
@@ -36,7 +36,7 @@ export function AiSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
           </tbody>
         </table>
       </div>
-      <div className="cs-columns">
+      <div data-reveal className="cs-columns">
         <div><h3 className="cs-sub">{l.safeguards}</h3><ul className="cs-list">{ai.safeguards.map((s) => <li key={s}>{s}</li>)}</ul></div>
         <div>
           <h3 className="cs-sub">{l.examples}</h3>

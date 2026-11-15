@@ -14,7 +14,7 @@ export function Register({ detail }: { detail: CourseDetail }) {
   const latest = sessions.length - 1;
   const legend: Status[] = ["present", "late", "absent", "excused"];
   return (
-    <section className="card register-card" aria-labelledby="reg-h">
+    <section data-reveal className="card register-card" aria-labelledby="reg-h">
       <div className="card-head">
         <div className="card-title"><div><h2 id="reg-h">{t.course.register}</h2><p>{t.course.registerNote}</p></div></div>
         <ul className="legend">
@@ -22,7 +22,7 @@ export function Register({ detail }: { detail: CourseDetail }) {
         </ul>
       </div>
       {sessions.length === 0 ? <p className="empty">{t.course.noSessions}</p> : (
-        <div className="register-scroll" tabIndex={0} aria-label={t.course.register}>
+        <div className="register-scroll" data-lenis-prevent tabIndex={0} aria-label={t.course.register}>
           <table className="register">
             <thead>
               <tr>

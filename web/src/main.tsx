@@ -14,6 +14,7 @@ import "./styles/people.css";
 import "./styles/assistant.css";
 import "./styles/public.css";
 import "./styles/case.css";
+import "./styles/motion.css";
 import { hydrateRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Root } from "./Root";

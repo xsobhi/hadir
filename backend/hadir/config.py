@@ -28,7 +28,7 @@ DATA_DIR = Path(os.environ.get("HADIR_DATA_DIR", BACKEND_DIR / "var"))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = DATA_DIR / "hadir.db"
 CHECKPOINT_PATH = DATA_DIR / "agent-checkpoints.db"
-WEB_DIST = Path(os.environ.get("HADIR_WEB_DIST", ROOT_DIR / "web" / "dist"))
+WEB_DIST = Path(os.environ.get("HADIR_WEB_DIST", ROOT_DIR / "web" / "dist" / "client"))
 
 TZ = ZoneInfo(os.environ.get("HADIR_TZ", "Asia/Gaza"))
 PUBLIC_ORIGIN = os.environ.get("HADIR_PUBLIC_ORIGIN", "https://hadir.xsobhi.com")

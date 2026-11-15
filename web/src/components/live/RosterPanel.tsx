@@ -26,7 +26,7 @@ export function RosterPanel({ state, onMark }: { state: LiveState; onMark: (id: 
     <button type="button" className={`act ${cls}`} onClick={onClick} title={label} aria-label={label}><Icon aria-hidden="true" strokeWidth={2.4} /></button>
   );
   return (
-    <section className="card roster-card" aria-label={t.course.roster}>
+    <section data-reveal className="card roster-card" aria-label={t.course.roster}>
       <div className="roster-tools">
         <div className="tabs" role="tablist">
           {(["waiting", "here", "all"] as Tab[]).map((k) => (
@@ -42,7 +42,7 @@ export function RosterPanel({ state, onMark }: { state: LiveState; onMark: (id: 
         </label>
       </div>
       {rows.length === 0 ? <p className="empty">{t.live.noScans}</p> : (
-        <ul className="rows roster-rows">
+        <ul className="rows roster-rows" data-lenis-prevent>
           {rows.map((p) => (
             <li key={p.id} className="row roster-row">
               <Person nameAr={p.nameAr} nameEn={p.nameEn} number={p.number} gender={p.gender} />

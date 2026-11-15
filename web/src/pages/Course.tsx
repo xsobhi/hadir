@@ -10,6 +10,7 @@ import { Register } from "../components/course/Register";
 import { RosterTab } from "../components/course/RosterTab";
 import { SessionBars } from "../components/course/SessionBars";
 import { Shell } from "../components/Shell";
+import { PageSkeleton } from "../components/skeletons";
 import { LoadError, Skeleton } from "../components/States";
 import { StatCard } from "../components/ui/StatCard";
 import { useLang } from "../i18n";
@@ -37,6 +38,7 @@ export default function Course() {
   const c = data?.course;
   const s = data?.summary;
   const atRisk = s ? s.levels.watch + s.levels.warning + s.levels.over : 0;
+  if (!data && !error) return <Shell title={c ? pick(c.nameAr, c.nameEn) : t.nav.courses}><PageSkeleton kind="course" /></Shell>;
   return (
     <Shell title={c ? pick(c.nameAr, c.nameEn) : t.nav.courses}>
       {error ? <LoadError onRetry={reload} /> : null}
@@ -55,11 +57,11 @@ export default function Course() {
       </div>
       {!data || !c || !s ? <Skeleton rows={8} /> : tab === "roster" ? <RosterTab detail={data} onChange={reload} /> : tab === "settings" ? (
         <div className="grid cols-main">
-          <section className="card" aria-labelledby="set-h">
+          <section data-reveal className="card" aria-labelledby="set-h">
             <div className="card-head"><h2 id="set-h">{t.course.settingsTitle}</h2></div>
             <CourseForm initial={c} submitLabel={t.save} onSubmit={async (v) => { await api.patch(`/api/courses/${c.id}`, v); await reload(); }} />
           </section>
-          <section className="card danger-zone">
+          <section data-reveal className="card danger-zone">
             <h2>{t.course.deleteCourse}</h2>
             <p className="muted">{t.course.deleteConfirm(c.code)}</p>
             <button type="button" className="btn btn-danger" onClick={() => void remove()}>{t.course.deleteCourse}</button>
@@ -73,7 +75,7 @@ export default function Course() {
             <StatCard icon={ShieldAlert} tone="violet" label={t.course.allowance} value={s.allowed} hint={t.course.allowanceNote(c.absenceLimitPct, s.planned)} />
             <StatCard icon={TriangleAlert} tone="amber" label={t.course.atRisk} value={atRisk} hint={t.overview.statRiskHint(s.levels.over)} />
           </div>
-          <section className="card" aria-labelledby="bars-h">
+          <section data-reveal className="card" aria-labelledby="bars-h">
             <div className="card-head"><h2 id="bars-h">{t.course.perClass}</h2></div>
             <SessionBars sessions={data.sessions} />
           </section>

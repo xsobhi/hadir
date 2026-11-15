@@ -33,7 +33,7 @@ export function RosterTab({ detail, onChange }: { detail: CourseDetail; onChange
   const students = [...detail.students].sort((a, b) => pick(a.nameAr, a.nameEn).localeCompare(pick(b.nameAr, b.nameEn)));
   return (
     <div className="grid cols-main">
-      <section className="card" aria-labelledby="roster-h">
+      <section data-reveal className="card" aria-labelledby="roster-h">
         <div className="card-head"><h2 id="roster-h">{t.course.roster}</h2><span className="muted num">{students.length}</span></div>
         <ul className="rows">
           {students.map((s) => (

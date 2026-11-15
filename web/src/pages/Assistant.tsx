@@ -56,12 +56,12 @@ export default function Assistant() {
   const errorText = error === "limit" ? t.assistant.limit : error === "busy" ? t.assistant.busy : error ? t.assistant.failed : null;
   return (
     <Shell title={t.assistant.title}>
-      <div className="page-head">
+      <div data-reveal className="page-head">
         <div className="card-title" data-kubai-trigger><Tile icon={BotSparkle} tone="amber" size={52} /><div><h1>{t.assistant.title}</h1><p className="lead">{t.assistant.emptyLead}</p></div></div>
         <div className="actions"><Link className="btn btn-soft" to="/app/assistant"><Plus aria-hidden="true" />{t.assistant.newChat}</Link></div>
       </div>
       <div className="chat-layout">
-        <aside className="card threads" aria-labelledby="threads-h">
+        <aside data-reveal className="card threads" data-lenis-prevent aria-labelledby="threads-h">
           <h2 id="threads-h" className="threads-h"><MessagesSquare size={22} color="#2563eb" trigger="none" />{t.assistant.history}</h2>
           {threads.length === 0 ? <p className="muted small">{t.assistant.noHistory}</p> : (
             <ul className="thread-list">
@@ -73,7 +73,7 @@ export default function Assistant() {
             </ul>
           )}
         </aside>
-        <section className="card chat" aria-label={t.assistant.title}>
+        <section data-reveal className="card chat" aria-label={t.assistant.title}>
           <div className="chat-scroll" aria-live="polite">
             {items.length === 0 ? (
               <div className="chat-empty">

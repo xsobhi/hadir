@@ -10,10 +10,12 @@ import { RosterPanel } from "../components/live/RosterPanel";
 import { ScanPanel } from "../components/live/ScanPanel";
 import { ScanResultCard } from "../components/live/ScanResultCard";
 import { Shell } from "../components/Shell";
+import { PageSkeleton } from "../components/skeletons";
 import { LoadError, Skeleton } from "../components/States";
 import { useLang } from "../i18n";
 import { time } from "../i18n/format";
 import { feedback } from "../scanner/feedback";
+import ClickSpark, { type ClickSparkHandle } from "../vendor/reactbits/ClickSpark";
 
 type Last = Omit<ScanResult, "state"> | { result: "closed" } | null;
 
@@ -31,6 +33,7 @@ export default function Live() {
   const [last, setLast] = useState<Last>(null);
   const [sound, setSound] = useState(true);
   const busy = useRef(false);
+  const sparks = useRef<ClickSparkHandle>(null);
   useEffect(() => {
     setSound(localStorage.getItem("hadir.sound") !== "off");
   }, []);
@@ -47,6 +50,7 @@ export default function Live() {
       const { state, ...rest } = r;
       setData(state);
       setLast(rest);
+      if (r.result === "ok") sparks.current?.spark();
       feedback(r.result === "ok" ? (r.status === "late" ? "late" : "present") : "problem", sound);
     } catch (e) {
       if (e instanceof ApiError && e.code === "session_closed") setLast({ result: "closed" });
@@ -71,9 +75,10 @@ export default function Live() {
 
   const closed = data?.session.status === "closed";
   const title = data ? pick(data.course.nameAr, data.course.nameEn) : t.live.title;
+  if (!data && !error) return <Shell title={title}><PageSkeleton kind="live" /></Shell>;
   return (
     <Shell title={title}>
-      <div className="page-head">
+      <div data-reveal className="page-head">
         <div>
           <h1>{title}</h1>
           {data && (
@@ -98,11 +103,16 @@ export default function Live() {
         <div className="grid live-grid">
           <div className="stack">
             {closed ? (
-              <section className="card closed-card"><h2>{t.live.closedTitle}</h2><p className="num">{t.live.closedSummary(data.counts.present, data.counts.late, data.counts.absent)}</p></section>
+              <section data-reveal className="card closed-card"><h2>{t.live.closedTitle}</h2><p className="num">{t.live.closedSummary(data.counts.present, data.counts.late, data.counts.absent)}</p></section>
             ) : <ScanPanel onCode={(c) => void onCode(c)} disabled={closed} />}
           </div>
           <div className="stack">
-            {!closed && <ScanResultCard result={last} />}
+            {!closed && (
+              <ClickSpark ref={sparks} sparkColor={["#22c55e", "#0e8a6a", "#f59e0b", "#2563eb"]} sparkCount={14}
+                sparkRadius={70} sparkSize={12} duration={650} shape="star" layer="front">
+                <ScanResultCard result={last} />
+              </ClickSpark>
+            )}
             <CountCard state={data} />
             <RosterPanel state={data} onMark={(sid, s) => void mark(sid, s)} />
           </div>

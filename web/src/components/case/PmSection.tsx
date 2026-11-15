@@ -11,8 +11,8 @@ export function PmSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
   return (
     <section className="cs-section" aria-labelledby="pm-h">
       <h2 id="pm-h" data-kubai-trigger><Tile icon={ClipboardCheck} tone="blue" size={52} />{l.pm}</h2>
-      <div className="cs-split"><h3>{l.goal}</h3><p className="cs-statement">{pm.goal}</p></div>
-      <div className="cs-columns cs-columns-4">
+      <div className="cs-split" data-reveal><h3>{l.goal}</h3><p className="cs-statement">{pm.goal}</p></div>
+      <div data-reveal className="cs-columns cs-columns-4">
         <div><h3 className="cs-sub">{l.scopeIn}</h3><ul className="cs-list">{pm.scopeIn.map((x) => <li key={x}>{x}</li>)}</ul></div>
         <div><h3 className="cs-sub">{l.scopeOut}</h3><ul className="cs-list">{pm.scopeOut.map((x) => <li key={x}>{x}</li>)}</ul></div>
         <div><h3 className="cs-sub">{l.deliverables}</h3><ul className="cs-list">{pm.deliverables.map((x) => <li key={x}>{x}</li>)}</ul></div>
@@ -21,7 +21,7 @@ export function PmSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
       <h3 className="cs-sub">{l.milestones}</h3>
       <ol className="milestones">
         {pm.milestones.map((m) => (
-          <li key={m.name} className={`milestone ms-${m.status}`}>
+          <li key={m.name} className={`milestone ms-${m.status}`} data-reveal>
             <span className="ms-dot" aria-hidden="true" />
             <span className="ms-date num">{day(m.date, lang)}</span>
             <span className="ms-name">{m.name}</span>
@@ -29,7 +29,7 @@ export function PmSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
           </li>
         ))}
       </ol>
-      <div className="cs-columns">
+      <div data-reveal className="cs-columns">
         <div>
           <h3 className="cs-sub">{l.stakeholders}</h3>
           <table className="cs-table">
@@ -46,7 +46,7 @@ export function PmSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
         </div>
       </div>
       <h3 className="cs-sub">{l.risks}</h3>
-      <div className="cs-table-wrap">
+      <div className="cs-table-wrap" data-reveal>
         <table className="cs-table">
           <thead><tr><th>{l.risk}</th><th>{l.likelihood}</th><th>{l.impact}</th><th>{l.mitigation}</th></tr></thead>
           <tbody>
@@ -61,7 +61,7 @@ export function PmSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
           </tbody>
         </table>
       </div>
-      <div className="cs-columns">
+      <div data-reveal className="cs-columns">
         <div><h3 className="cs-sub">{l.retro}: {l.wentWell}</h3><ul className="cs-list">{pm.retrospective.wentWell.map((x) => <li key={x}>{x}</li>)}</ul></div>
         <div><h3 className="cs-sub">{l.retro}: {l.improve}</h3><ul className="cs-list">{pm.retrospective.improve.map((x) => <li key={x}>{x}</li>)}</ul></div>
       </div>

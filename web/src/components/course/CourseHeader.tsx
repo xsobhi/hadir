@@ -9,7 +9,7 @@ export function CourseHeader({ data, onStart }: { data: CourseDetail; onStart: (
   const { t, pick } = useLang();
   const c = data.course;
   return (
-    <div className="page-head">
+    <div data-reveal className="page-head">
       <div>
         <h1>{pick(c.nameAr, c.nameEn)}</h1>
         <div className="meta-row">

@@ -6,6 +6,7 @@ import { useData } from "../api/useData";
 import { Avatar } from "../components/Avatar";
 import { IdCardView } from "../components/IdCardView";
 import { Shell } from "../components/Shell";
+import { PageSkeleton } from "../components/skeletons";
 import { LoadError, Skeleton } from "../components/States";
 import { AbsenceBar, LevelChip, StatusDot } from "../components/ui/Status";
 import { Tile } from "../components/ui/Tile";
@@ -26,12 +27,13 @@ export default function Student() {
   const { data, error, reload } = useData<StudentRecord>(`/api/students/${id}`);
   const s = data?.student;
   const name = s ? pick(s.nameAr, s.nameEn) : t.student;
+  if (!data && !error) return <Shell title={name}><PageSkeleton kind="profile" /></Shell>;
   return (
     <Shell title={name}>
       {error ? <LoadError onRetry={reload} /> : null}
       {!data || !s ? <Skeleton rows={6} /> : (
         <>
-          <section className="profile card">
+          <section data-reveal className="profile card">
             <Avatar seed={s.number} gender={s.gender} size={96} className="profile-avatar" />
             <div className="profile-text">
               <h1>{name}</h1>
@@ -46,7 +48,7 @@ export default function Student() {
               {data.courses.map((c) => {
                 const left = c.allowed - c.absent;
                 return (
-                  <section key={c.courseId} className="card" aria-labelledby={`c-${c.courseId}`}>
+                  <section key={c.courseId} data-reveal className="card" aria-labelledby={`c-${c.courseId}`}>
                     <div className="card-head">
                       <div className="card-title" data-kubai-trigger><Tile icon={BookOpen} tone="blue" size={42} /><div><h2 id={`c-${c.courseId}`}>{pick(c.nameAr, c.nameEn)}</h2><p>{c.code}</p></div></div>
                       <LevelChip level={c.level} />
@@ -75,11 +77,11 @@ export default function Student() {
               })}
             </div>
             <div className="stack">
-              <section className="card" aria-labelledby="card-h">
+              <section data-reveal className="card" aria-labelledby="card-h">
                 <div className="card-head"><div className="card-title" data-kubai-trigger><Tile icon={IdBadge} tone="violet" size={42} /><h2 id="card-h">{t.record.card}</h2></div></div>
                 <IdCardView student={s} />
               </section>
-              <section className="card" aria-labelledby="notices-h">
+              <section data-reveal className="card" aria-labelledby="notices-h">
                 <div className="card-head"><div className="card-title" data-kubai-trigger><Tile icon={MailAlert} tone="amber" size={42} /><h2 id="notices-h">{t.record.notices}</h2></div></div>
                 {data.notices.length === 0 ? <p className="empty">{t.record.noNotices}</p> : (
                   <ul className="rows">

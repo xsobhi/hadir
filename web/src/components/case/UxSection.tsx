@@ -9,14 +9,14 @@ export function UxSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
   return (
     <section className="cs-section" aria-labelledby="ux-h">
       <h2 id="ux-h" data-kubai-trigger><Tile icon={UsersStar} tone="violet" size={52} />{l.ux}</h2>
-      <div className="cs-split">
+      <div className="cs-split" data-reveal>
         <h3>{l.problem}</h3>
         <p className="cs-statement">{ux.problem}</p>
       </div>
       <h3 className="cs-sub">{l.personas}</h3>
       <div className="personas">
         {ux.personas.map((p) => (
-          <article key={p.name} className="persona">
+          <article key={p.name} className="persona" data-reveal>
             <div className="persona-top">
               <Avatar seed={p.name} size={52} />
               <div><p className="persona-name">{p.name}</p><p className="muted small">{p.role}</p></div>
@@ -30,7 +30,7 @@ export function UxSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
         ))}
       </div>
       <h3 className="cs-sub">{l.journey}</h3>
-      <div className="cs-table-wrap">
+      <div className="cs-table-wrap" data-reveal>
         <table className="cs-table">
           <thead><tr><th>{l.stage}</th><th>{l.doing}</th><th>{l.feeling}</th><th>{l.opportunity}</th></tr></thead>
           <tbody>
@@ -40,7 +40,7 @@ export function UxSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
           </tbody>
         </table>
       </div>
-      <div className="cs-columns">
+      <div data-reveal className="cs-columns">
         <div>
           <h3 className="cs-sub">{l.hmw}</h3>
           <ul className="cs-list">{ux.hmw.map((h) => <li key={h}>{h}</li>)}</ul>
@@ -55,7 +55,7 @@ export function UxSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
         </div>
       </div>
       <h3 className="cs-sub">{l.research}</h3>
-      <div className="cs-columns cs-columns-3">
+      <div data-reveal className="cs-columns cs-columns-3">
         <div><p className="persona-label">{l.researchGoals}</p><ul className="cs-list">{ux.researchPlan.goals.map((g) => <li key={g}>{g}</li>)}</ul></div>
         <div><p className="persona-label">{l.questions}</p><ul className="cs-list">{ux.researchPlan.questions.map((g) => <li key={g}>{g}</li>)}</ul></div>
         <div><p className="persona-label">{l.kpis}</p><ul className="cs-list">{ux.researchPlan.kpis.map((g) => <li key={g}>{g}</li>)}</ul></div>

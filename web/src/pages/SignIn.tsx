@@ -49,7 +49,7 @@ export default function SignIn({ mode }: { mode: "in" | "up" }) {
     <div className="public">
       <PublicBar />
       <main className="auth-wrap">
-        <form className="card auth-form" onSubmit={submit}>
+        <form className="card auth-form auth-in" onSubmit={submit}>
           <h1>{s.title}</h1>
           <PabbelButton className="btn-block" />
           <p className="muted small auth-note">{t.auth.pabbelNote}</p>

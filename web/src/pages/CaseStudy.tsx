@@ -8,6 +8,8 @@ import { Avatar } from "../components/Avatar";
 import { PublicBar } from "../components/public/PublicBar";
 import { caseStudy } from "../content/case-study";
 import { useLang } from "../i18n";
+import { useRef } from "react";
+import { useReveal } from "../motion/useReveal";
 import { useTitle } from "../ssr/context";
 
 export default function CaseStudy() {
@@ -15,11 +17,13 @@ export default function CaseStudy() {
   const cs = caseStudy[lang];
   const l = labels[lang];
   useTitle(`${cs.title} · ${t.product}`);
+  const main = useRef<HTMLElement>(null);
+  useReveal(main);
   return (
     <div className="public">
       <PublicBar />
-      <main className="case">
-        <header className="cs-head">
+      <main className="case" ref={main}>
+        <header className="cs-head" data-reveal>
           <h1>{cs.title}</h1>
           <p className="cs-lead">{cs.lead}</p>
           <p className="cs-author"><Avatar seed="sobhi-al-firani" gender="m" size={44} /><span><strong>{cs.author.name}</strong> · {cs.author.line}</span></p>

@@ -7,6 +7,14 @@
     <meta name="description" content="حاضر: نظام حضور جامعي يمسح باركود بطاقة الطالب، ويتابع الغياب مقابل الحد المسموح، مع مساعد ذكي مبني بـ LangGraph." />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>حاضر · Hadir</title>
+    <script>
+      // Animations pre-hide what they reveal only when scripts run; if the app has not taken over in 3 s, show all.
+      document.documentElement.classList.add("js");
+      setTimeout(function () {
+        var root = document.documentElement;
+        if (!root.classList.contains("js-ready")) root.classList.add("js-late");
+      }, 3000);
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -19,7 +19,7 @@ export function EmptyWorkspace() {
     }
   };
   return (
-    <section className="card empty-workspace" data-kubai-trigger>
+    <section data-reveal className="card empty-workspace" data-kubai-trigger>
       <span className="empty-art"><BookOpen size={72} color="#0e8a6a" trigger="parent" /></span>
       <h2>{t.auth.sampleTitle}</h2>
       <p className="muted">{t.auth.sampleLead}</p>

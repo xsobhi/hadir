@@ -6,6 +6,7 @@ import type { Level, StudentRow } from "../api/types";
 import { useData } from "../api/useData";
 import { Person } from "../components/Person";
 import { Shell } from "../components/Shell";
+import { PageSkeleton } from "../components/skeletons";
 import { LoadError, Skeleton } from "../components/States";
 import { AbsenceBar, LevelChip } from "../components/ui/Status";
 import { Tile } from "../components/ui/Tile";
@@ -37,9 +38,10 @@ export default function Students() {
       .sort((a, b) => RANK[a.level] - RANK[b.level] || b.absent - a.absent || a.nameEn.localeCompare(b.nameEn));
   }, [data, q, course, level]);
   const people = data ? new Set(data.rows.map((r) => r.id)).size : 0;
+  if (!data && !error) return <Shell title={t.students.title}><PageSkeleton kind="list" /></Shell>;
   return (
     <Shell title={t.students.title}>
-      <div className="page-head">
+      <div data-reveal className="page-head">
         <div className="card-title" data-kubai-trigger><Tile icon={Users} tone="violet" size={52} /><div><h1>{t.students.title}</h1><p className="lead">{data ? t.students.count(people) : "\u00a0"}</p></div></div>
       </div>
       {error ? <LoadError onRetry={reload} /> : null}
@@ -62,7 +64,7 @@ export default function Students() {
         </div>
         <span className="muted num toolbar-count">{rows.length}</span>
       </div>
-      <section className="card table-card">
+      <section data-reveal className="card table-card">
         {!data ? <Skeleton rows={10} /> : rows.length === 0 ? <p className="empty">{t.students.empty}</p> : (
           <table className="table">
             <thead>

@@ -1,0 +1,6 @@
+Components in this folder are copied unmodified from React Bits (https://reactbits.dev, https://github.com/DavidHDev/react-bits)
+by David Haz, under the MIT License with Commons Clause. They are third-party files and are kept as published,
+so they are exempt from this project's 200-line-per-file convention.
+
+- SpotlightCard.tsx / SpotlightCard.css (registry: reactbits.dev/r/SpotlightCard-TS-CSS.json)
+- ClickSpark.tsx (registry: reactbits.dev/r/ClickSpark-TS-CSS.json)

@@ -124,3 +124,20 @@ a.row:hover, button.row:hover { background: var(--surface-2); }
   .page-head .actions { width: 100%; }
   .page-head .actions .btn { flex: 1; }
 }
+
+/* Page-shaped skeletons: soft blocks with a slow sheen, at the size of what will load. */
+.sk { display: block; border-radius: 10px; background: linear-gradient(100deg, var(--line-2) 20%, #f8fafc 40%, var(--line-2) 60%); background-size: 220% 100%; animation: shimmer 1.5s ease-in-out infinite; }
+.sk-circle { border-radius: 50%; flex: none; }
+.sk-tile { width: 46px; height: 46px; border-radius: 14px; flex: none; }
+.sk-hero { height: 230px; border-radius: 26px; margin-bottom: var(--gap); }
+.sk-tabs { width: 360px; max-width: 100%; height: 48px; border-radius: 14px; margin-bottom: var(--gap); }
+.sk-viewport { aspect-ratio: 4 / 3; border-radius: 20px; margin-bottom: 18px; }
+.sk-stack { display: grid; gap: 10px; flex: 1; min-width: 0; }
+.sk-rows { display: grid; gap: 18px; margin-top: 18px; }
+.sk-row { display: flex; align-items: center; gap: 14px; }
+.sk-card { display: grid; gap: 12px; align-content: start; margin-bottom: var(--gap); }
+.sk-head { align-items: center; }
+.sk-toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: var(--gap); }
+.sk-profile { display: flex; align-items: center; gap: 22px; margin-bottom: var(--gap); }
+.page-skeleton { animation: sk-in 300ms ease both; }
+@keyframes sk-in { from { opacity: 0; } }

@@ -7,7 +7,7 @@
   <workingdirectory>C:\hadir\app\backend</workingdirectory>
   <env name="HADIR_ENV_FILE" value="C:\hadir\hadir.env"/>
   <env name="HADIR_DATA_DIR" value="C:\hadir\data"/>
-  <env name="HADIR_WEB_DIST" value="C:\hadir\app\web\dist"/>
+  <env name="HADIR_WEB_DIST" value="C:\hadir\app\web\dist\client"/>
   <env name="PYTHONUTF8" value="1"/>
   <log mode="roll-by-size">
     <sizeThreshold>10240</sizeThreshold>

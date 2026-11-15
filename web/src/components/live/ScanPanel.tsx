@@ -22,7 +22,7 @@ export function ScanPanel({ onCode, disabled }: { onCode: (code: string) => void
   };
   const on = state === "on" || state === "starting";
   return (
-    <section className="card scan-card-wrap" aria-labelledby="scan-h">
+    <section data-reveal className="card scan-card-wrap" aria-labelledby="scan-h">
       <div className="card-head">
         <div className="card-title" data-kubai-trigger><Tile icon={ScanBarcode} tone="brand" size={44} /><h2 id="scan-h">{t.live.scanTitle}</h2></div>
         {on && <button type="button" className="btn btn-ghost" onClick={stop}><CameraOff aria-hidden="true" />{t.live.cameraStop}</button>}

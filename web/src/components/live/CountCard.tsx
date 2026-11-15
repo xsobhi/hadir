@@ -16,7 +16,7 @@ export function CountCard({ state }: { state: LiveState }) {
     ["excused", t.status.excused, state.counts.excused],
   ] as const;
   return (
-    <section className="card count-card" aria-label={`${here} / ${state.enrolled}`}>
+    <section data-reveal className="card count-card" aria-label={`${here} / ${state.enrolled}`}>
       <svg className="ring" viewBox="0 0 128 128" aria-hidden="true">
         <circle cx="64" cy="64" r={r} className="ring-track" />
         <circle cx="64" cy="64" r={r} className="ring-present" strokeDasharray={`${presentLen} ${c}`} />
