@@ -1,0 +1,9 @@
+.venv/
+node_modules/
+web/dist/
+backend/var/
+backend/.env
+__pycache__/
+*.pyc
+.taste-skill/inspect/
+deploy/out/
