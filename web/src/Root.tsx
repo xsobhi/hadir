@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import App from "./App";
 import { AuthProvider } from "./auth/AuthContext";
 import { LangProvider } from "./i18n";
+import { ToastProvider } from "./components/ui/Toast";
 import { SmoothScroll } from "./motion/SmoothScroll";
 import { BootContext, type Boot } from "./ssr/context";
 
@@ -12,9 +13,11 @@ export function Root({ boot }: { boot: Boot }) {
       <BootContext.Provider value={boot}>
         <LangProvider>
           <AuthProvider>
-            <SmoothScroll>
-              <App />
-            </SmoothScroll>
+            <ToastProvider>
+              <SmoothScroll>
+                <App />
+              </SmoothScroll>
+            </ToastProvider>
           </AuthProvider>
         </LangProvider>
       </BootContext.Provider>

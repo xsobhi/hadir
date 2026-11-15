@@ -1,0 +1,61 @@
+/* Students page filters and pager, the add-student dialog, toasts, and the highlight on a just-added student. */
+.filters { display: grid; gap: 12px; margin-bottom: var(--gap); }
+.filters-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.filters .search { flex: 1; min-width: 240px; max-width: none; }
+.filters .select { min-width: 150px; }
+
+.pager { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding: 14px 6px 6px; border-top: 1px solid var(--line-2); margin-top: 6px; }
+.pager-range { color: var(--text-3); font-weight: 700; font-size: 14px; }
+.pager-pages { display: flex; align-items: center; gap: 4px; }
+.pager-group { display: inline-flex; align-items: center; gap: 4px; }
+.pager-btn {
+  min-width: 38px; height: 38px; padding: 0 8px; border-radius: 11px; border: 1px solid var(--line); background: var(--surface);
+  display: inline-grid; place-items: center; font-weight: 700; color: var(--text-2); transition: background-color 150ms ease, transform 150ms var(--ease-out);
+}
+.pager-btn svg { width: 18px; height: 18px; }
+.pager-btn:hover:not([disabled]) { background: var(--surface-2); color: var(--text); }
+.pager-btn:active:not([disabled]) { transform: scale(0.94); }
+.pager-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+.pager-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+.pager-gap { color: var(--text-3); padding: 0 2px; }
+.pager-size { display: inline-flex; align-items: center; gap: 8px; color: var(--text-3); font-size: 14px; font-weight: 500; }
+.pager-size .input { height: 38px; width: auto; padding: 0 10px; }
+
+.row-new, .row-new td { animation: row-new 2.6s var(--ease-out) both; }
+@keyframes row-new { 0%, 35% { background: var(--brand-50); box-shadow: inset 0 0 0 2px var(--brand-100); } 100% { background: transparent; box-shadow: none; } }
+
+.dialog { border: 0; padding: 0; border-radius: 24px; width: min(620px, calc(100vw - 24px)); max-height: calc(100vh - 32px); box-shadow: var(--shadow-lg); color: var(--text); }
+.dialog::backdrop { background: rgba(15, 23, 42, 0.42); backdrop-filter: blur(3px); }
+.dialog[open] { animation: dialog-in 280ms var(--ease-out); }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(16px) scale(0.97); } }
+.dialog-body { padding: 24px; }
+.dialog-head { display: flex; align-items: center; gap: 14px; }
+.dialog-head h2 { display: flex; align-items: center; gap: 8px; font-size: 21px; }
+.dialog-head h2 svg { width: 22px; height: 22px; color: var(--brand); }
+.seg-field { border: 0; padding: 0; margin: 0; }
+.seg-field legend { padding: 0; margin-bottom: 8px; }
+.seg { display: flex; gap: 8px; }
+.seg-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.seg-opt span { display: inline-flex; align-items: center; height: 42px; padding: 0 18px; border-radius: 12px; border: 1.5px solid var(--line); font-weight: 700; cursor: pointer; transition: all 150ms ease; }
+.seg-opt input:checked + span { background: var(--brand-50); border-color: var(--brand); color: var(--brand-700); }
+.seg-opt input:focus-visible + span { outline: 3px solid var(--brand-100); outline-offset: 2px; }
+
+.toasts { position: fixed; z-index: 60; inset-inline-start: 20px; bottom: 20px; display: grid; gap: 10px; width: min(420px, calc(100vw - 40px)); }
+.toast {
+  display: flex; align-items: center; gap: 10px; padding: 14px 14px 14px 16px; border-radius: 16px; background: #0f172a; color: #fff;
+  box-shadow: var(--shadow-lg); font-weight: 500; animation: toast-in 320ms var(--ease-out);
+}
+.toast > svg { width: 20px; height: 20px; flex: none; }
+.toast span { flex: 1; line-height: 1.5; }
+.toast button { border: 0; background: none; color: #94a3b8; display: grid; place-items: center; padding: 4px; border-radius: 8px; }
+.toast button svg { width: 16px; height: 16px; }
+.toast-success > svg { color: #4ade80; } .toast-error > svg { color: #fb7185; } .toast-info > svg { color: #60a5fa; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(14px) scale(0.98); } }
+
+@media (max-width: 760px) {
+  .filters .select { flex: 1 1 45%; min-width: 0; }
+  .pager { justify-content: center; }
+  .pager-range { width: 100%; text-align: center; }
+  .dialog-body { padding: 18px; }
+  .toasts { inset-inline: 12px; width: auto; bottom: 12px; }
+}

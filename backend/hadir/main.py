@@ -18,7 +18,7 @@ app = FastAPI(title="Hadir", docs_url=None, redoc_url=None, openapi_url=None)
 for module in (auth_routes, pabbel_auth, overview, courses, roster, live, students, assistant):
     app.include_router(module.router)
 
-ALLOWED_HOSTS = {urlparse(PUBLIC_ORIGIN).netloc, "localhost:8731", "127.0.0.1:8731"}
+ALLOWED_HOSTS = {urlparse(PUBLIC_ORIGIN).netloc, "localhost:8731", "127.0.0.1:8731", "localhost:8732", "127.0.0.1:8732"}
 
 
 @app.middleware("http")

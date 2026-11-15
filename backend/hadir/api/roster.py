@@ -33,11 +33,13 @@ def _clean_number(raw: str) -> str:
     return "".join(ch for ch in raw if ch.isalnum())[:32]
 
 
-def _enroll(db, owner_id: int, course_id: int, s: StudentIn) -> int:
+def _enroll(db, owner_id: int, course_id: int, s: StudentIn) -> tuple[int, bool, bool]:
+    """Returns (student id, whether the student already existed, whether they were already in this course)."""
     number = _clean_number(s.number)
     if len(number) < 3:
         raise HTTPException(422, "bad_number")
     row = db.execute("SELECT id FROM students WHERE owner_id = ? AND number = ?", (owner_id, number)).fetchone()
+    existed = bool(row)
     if row:
         student_id = row["id"]
     else:
@@ -45,15 +47,16 @@ def _enroll(db, owner_id: int, course_id: int, s: StudentIn) -> int:
             "INSERT INTO students (owner_id, number, name_ar, name_en, major, year, gender) VALUES (?, ?, ?, ?, ?, ?, ?)",
             (owner_id, number, s.nameAr.strip(), s.nameEn.strip() or s.nameAr.strip(), s.major.strip(), s.year, s.gender),
         ).lastrowid
-    db.execute("INSERT OR IGNORE INTO enrollments (course_id, student_id) VALUES (?, ?)", (course_id, student_id))
-    return student_id
+    added = db.execute("INSERT OR IGNORE INTO enrollments (course_id, student_id) VALUES (?, ?)", (course_id, student_id)).rowcount
+    return student_id, existed, not added
 
 
 @router.post("")
 def add_student(course_id: int, body: StudentIn, user: dict = Depends(current_user)):
     with tx() as db:
         own_course(db, user["id"], course_id)
-        return {"id": _enroll(db, user["id"], course_id, body)}
+        student_id, existed, already = _enroll(db, user["id"], course_id, body)
+        return {"id": student_id, "existing": existed, "alreadyEnrolled": already}
 
 
 @router.post("/paste")
