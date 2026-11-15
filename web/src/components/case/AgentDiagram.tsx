@@ -44,7 +44,7 @@ export function AgentDiagram({ approve, decline, read, write, answer, approved, 
         { from: [262, 105], to: [378, 40], label: read, curve: -10 },
         { from: [380, 52], to: [250, 96], curve: 18 },
         { from: [262, 125], to: [378, 190], label: write, curve: 10, ly: 172 },
-        { from: [436, 172], to: [436, 60], label: approve, lx: 470, ly: 120 },
+        { from: [436, 172], to: [436, 60], label: approve, lx: 474, ly: 150 },
         { from: [380, 200], to: [215, 137], label: decline, curve: 30, lx: 290, ly: 214 },
         { from: [262, 115], to: [588, 115], label: answer, lx: 520, ly: 108 },
       ]} />
