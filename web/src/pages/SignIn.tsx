@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { api, ApiError } from "../api/client";
 import type { User } from "../api/types";
 import { useAuth } from "../auth/AuthContext";
+import { PabbelButton } from "../components/public/PabbelButton";
 import { PublicBar } from "../components/public/PublicBar";
 import { useLang } from "../i18n";
 
@@ -14,6 +15,8 @@ export default function SignIn({ mode }: { mode: "in" | "up" }) {
   const [v, setV] = useState({ name: "", email: "", password: "", department: "" });
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [params] = useSearchParams();
+  const pabbelError = params.get("error");
   if (user) return <Navigate to="/app" replace />;
   const s = mode === "in" ? t.auth.signIn : t.auth.signUp;
   const submit = async (e: FormEvent) => {
@@ -44,8 +47,12 @@ export default function SignIn({ mode }: { mode: "in" | "up" }) {
     <div className="public">
       <PublicBar />
       <main className="auth-wrap">
-        <form className="panel auth-form" onSubmit={submit}>
+        <form className="card auth-form" onSubmit={submit}>
           <h1>{s.title}</h1>
+          <PabbelButton className="btn-block" />
+          <p className="muted small auth-note">{t.auth.pabbelNote}</p>
+          {pabbelError && <p className="error-text" role="alert">{t.auth.pabbelErrors[pabbelError] ?? t.loadFailed}</p>}
+          <p className="divider"><span>{t.auth.or}</span></p>
           {mode === "up" && field("name", t.auth.signUp.name, "text", { required: true, minLength: 2, autoComplete: "name" })}
           {field("email", t.auth.signIn.email, "email", { required: true, dir: "ltr", autoComplete: "email" })}
           {field("password", t.auth.signIn.password, "password", {

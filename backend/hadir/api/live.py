@@ -31,12 +31,12 @@ class MarkIn(BaseModel):
 
 def _state(db, session: dict, course: dict) -> dict:
     roster = db.execute(
-        "SELECT s.id, s.number, s.name_ar, s.name_en, a.status, a.marked_at, a.method, a.note "
+        "SELECT s.id, s.number, s.name_ar, s.name_en, s.gender, a.status, a.marked_at, a.method, a.note "
         "FROM enrollments e JOIN students s ON s.id = e.student_id "
         "LEFT JOIN attendance a ON a.student_id = s.id AND a.session_id = ? WHERE e.course_id = ? "
         "ORDER BY s.name_en", (session["id"], course["id"]),
     ).fetchall()
-    people = [{"id": r["id"], "number": r["number"], "nameAr": r["name_ar"], "nameEn": r["name_en"],
+    people = [{"id": r["id"], "number": r["number"], "nameAr": r["name_ar"], "nameEn": r["name_en"], "gender": r["gender"],
                "status": r["status"], "markedAt": r["marked_at"], "method": r["method"], "note": r["note"]}
               for r in roster]
     counts = {k: sum(1 for p in people if p["status"] == k) for k in ("present", "late", "absent", "excused")}

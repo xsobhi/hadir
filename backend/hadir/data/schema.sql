@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS users (
   title         TEXT NOT NULL DEFAULT '',
   department    TEXT NOT NULL DEFAULT '',
   is_demo       INTEGER NOT NULL DEFAULT 0,
+  gender        TEXT NOT NULL DEFAULT '',
+  pabbel_id     TEXT,                          -- set when the account signs in with Pabbel
   created_at    TEXT NOT NULL,
   expires_at    TEXT
 );
@@ -45,6 +47,7 @@ CREATE TABLE IF NOT EXISTS students (
   name_en    TEXT NOT NULL,
   major      TEXT NOT NULL DEFAULT '',
   year       INTEGER NOT NULL DEFAULT 1,
+  gender     TEXT NOT NULL DEFAULT '',            -- 'f', 'm' or '' (picks the default profile picture)
   UNIQUE (owner_id, number)
 );
 

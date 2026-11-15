@@ -1,3 +1,4 @@
+import { Bot, BotSparkle, MessagesSquare } from "kubai-icons-react";
 import { ArrowUp, Plus } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -7,6 +8,7 @@ import { Steps } from "../assistant/Steps";
 import type { Item, Step } from "../assistant/types";
 import { useAssistant } from "../assistant/useAssistant";
 import { Shell } from "../components/Shell";
+import { Tile } from "../components/ui/Tile";
 import { useLang } from "../i18n";
 
 function render(items: Item[], t: ReturnType<typeof useLang>["t"]): ReactNode[] {
@@ -26,7 +28,7 @@ function render(items: Item[], t: ReturnType<typeof useLang>["t"]): ReactNode[] 
     } else if (it.kind === "user") {
       out.push(<p key={i} className="bubble-user" dir="auto">{it.text}</p>);
     } else if (it.kind === "assistant") {
-      out.push(<div key={i} className="answer"><Markdown text={it.text} /></div>);
+      out.push(<div key={i} className="answer"><span className="answer-avatar" aria-hidden="true"><Bot size={22} color="#f59e0b" trigger="none" /></span><Markdown text={it.text} /></div>);
     } else {
       out.push(<ApprovalCard key={i} actions={it.actions} decided={it.approved} />);
     }
@@ -54,13 +56,13 @@ export default function Assistant() {
   const errorText = error === "limit" ? t.assistant.limit : error === "busy" ? t.assistant.busy : error ? t.assistant.failed : null;
   return (
     <Shell title={t.assistant.title}>
-      <div className="title-row">
-        <div><h1>{t.assistant.title}</h1><p className="muted">LangGraph · ReAct · human-in-the-loop · reflection</p></div>
-        <div className="actions"><Link className="btn" to="/app/assistant"><Plus aria-hidden="true" />{t.assistant.newChat}</Link></div>
+      <div className="page-head">
+        <div className="card-title" data-kubai-trigger><Tile icon={BotSparkle} tone="amber" size={52} /><div><h1>{t.assistant.title}</h1><p className="lead">{t.assistant.emptyLead}</p></div></div>
+        <div className="actions"><Link className="btn btn-soft" to="/app/assistant"><Plus aria-hidden="true" />{t.assistant.newChat}</Link></div>
       </div>
       <div className="chat-layout">
-        <aside className="panel threads" aria-labelledby="threads-h">
-          <h2 id="threads-h">{t.assistant.history}</h2>
+        <aside className="card threads" aria-labelledby="threads-h">
+          <h2 id="threads-h" className="threads-h"><MessagesSquare size={22} color="#2563eb" trigger="none" />{t.assistant.history}</h2>
           {threads.length === 0 ? <p className="muted small">{t.assistant.noHistory}</p> : (
             <ul className="thread-list">
               {threads.map((th) => (
@@ -71,12 +73,12 @@ export default function Assistant() {
             </ul>
           )}
         </aside>
-        <section className="panel chat" aria-label={t.assistant.title}>
+        <section className="card chat" aria-label={t.assistant.title}>
           <div className="chat-scroll" aria-live="polite">
             {items.length === 0 ? (
               <div className="chat-empty">
+                <span className="chat-empty-icon" data-kubai-trigger><Bot size={64} color="#f59e0b" trigger="parent" /></span>
                 <h2>{t.assistant.emptyTitle}</h2>
-                <p className="muted">{t.assistant.emptyLead}</p>
                 <ul className="examples">
                   {t.assistant.examples.map((ex) => (
                     <li key={ex}><button type="button" className="example" onClick={() => submit(undefined, ex)}>{ex}</button></li>

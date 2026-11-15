@@ -1,4 +1,6 @@
+import { ClipboardCheck } from "kubai-icons-react";
 import type { CaseStudy } from "../../content/case-study";
+import { Tile } from "../ui/Tile";
 import { useLang } from "../../i18n";
 import { day } from "../../i18n/format";
 import type { Labels } from "./labels";
@@ -8,7 +10,7 @@ export function PmSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
   const pm = cs.pm;
   return (
     <section className="cs-section" aria-labelledby="pm-h">
-      <h2 id="pm-h">{l.pm}</h2>
+      <h2 id="pm-h" data-kubai-trigger><Tile icon={ClipboardCheck} tone="blue" size={52} />{l.pm}</h2>
       <div className="cs-split"><h3>{l.goal}</h3><p className="cs-statement">{pm.goal}</p></div>
       <div className="cs-columns cs-columns-4">
         <div><h3 className="cs-sub">{l.scopeIn}</h3><ul className="cs-list">{pm.scopeIn.map((x) => <li key={x}>{x}</li>)}</ul></div>

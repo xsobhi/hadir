@@ -1,4 +1,4 @@
-import { Check, CircleAlert, LoaderCircle } from "lucide-react";
+import { Check, CircleAlert, LoaderCircle, Sparkles } from "lucide-react";
 import { useLang } from "../i18n";
 import type { Step } from "./types";
 
@@ -20,13 +20,12 @@ export function Steps({ steps }: { steps: Step[] }) {
           <span className="step-text">
             <span>{t.assistant.steps[s.name] ?? s.name}</span>
             {argLine(s.args) && <span className="muted ltr step-args">{argLine(s.args)}</span>}
-            <code className="step-tool">{s.name}</code>
           </span>
           {s.reflection.length > 0 && (
             <ol className="reflection">
               {s.reflection.map((r, i) => (
                 <li key={i}>
-                  {t.assistant.reflection[r.stage] ?? r.stage}
+                  <Sparkles aria-hidden="true" />{t.assistant.reflection[r.stage] ?? r.stage}
                   {r.verdict && <span className="muted"> · {r.verdict === "approved" ? t.assistant.verdictApproved : t.assistant.verdictRevise}</span>}
                 </li>
               ))}

@@ -1,9 +1,11 @@
-import { Volume2, VolumeX } from "lucide-react";
+import { FlagCheck } from "kubai-icons-react";
+import { ArrowRight, Clock3, PlayCircle, Trash2, Volume2, VolumeX } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api, ApiError } from "../api/client";
 import type { LiveState, ScanResult, Status } from "../api/types";
 import { useData } from "../api/useData";
+import { CountCard } from "../components/live/CountCard";
 import { RosterPanel } from "../components/live/RosterPanel";
 import { ScanPanel } from "../components/live/ScanPanel";
 import { ScanResultCard } from "../components/live/ScanResultCard";
@@ -64,55 +66,40 @@ export default function Live() {
   };
 
   const closed = data?.session.status === "closed";
-  const here = data ? data.counts.present + data.counts.late : 0;
   const title = data ? pick(data.course.nameAr, data.course.nameEn) : t.live.title;
   return (
     <Shell title={title}>
-      <div className="title-row">
+      <div className="page-head">
         <div>
           <h1>{title}</h1>
-          <p className="muted">
-            {data ? <>{closed ? t.live.closedTitle : t.live.title} · <span className="ltr">{data.course.code}</span> · {t.live.started} <span className="num">{time(data.session.startsAt)}</span> · {t.live.lateAfter(lateLine(data.session.startsAt, data.course.lateAfterMin))}</> : " "}
-          </p>
+          {data && (
+            <div className="meta-row">
+              <span className={closed ? "chip chip-waiting" : "chip chip-present live-chip"}>{closed ? t.live.closedTitle : t.live.title}</span>
+              <span className="meta"><PlayCircle aria-hidden="true" />{t.live.started} <span className="num">{time(data.session.startsAt)}</span></span>
+              <span className="meta"><Clock3 aria-hidden="true" />{t.live.lateAfter(lateLine(data.session.startsAt, data.course.lateAfterMin))}</span>
+            </div>
+          )}
         </div>
         <div className="actions">
-          <button type="button" className="btn btn-ghost" onClick={() => setSound((s) => !s)} aria-pressed={sound} aria-label={t.live.sound}>
+          <button type="button" className="btn icon-btn" onClick={() => setSound((s) => !s)} aria-pressed={sound} aria-label={t.live.sound} title={t.live.sound}>
             {sound ? <Volume2 aria-hidden="true" /> : <VolumeX aria-hidden="true" />}
           </button>
-          {data && !closed && <button type="button" className="btn btn-ghost btn-danger" onClick={() => void discard()}>{t.live.discard}</button>}
-          {data && !closed && <button type="button" className="btn btn-primary" onClick={() => void close()}>{t.live.finish}</button>}
-          {data && closed && <Link className="btn btn-primary" to={`/app/courses/${data.course.id}`}>{t.live.backToCourse}</Link>}
+          {data && !closed && <button type="button" className="btn btn-ghost btn-danger" onClick={() => void discard()}><Trash2 aria-hidden="true" />{t.live.discard}</button>}
+          {data && !closed && <button type="button" className="btn btn-primary" onClick={() => void close()} data-kubai-trigger><FlagCheck size={22} color="#ffffff" trigger="parent" />{t.live.finish}</button>}
+          {data && closed && <Link className="btn btn-primary" to={`/app/courses/${data.course.id}`}>{t.live.backToCourse}<ArrowRight aria-hidden="true" className="flip-rtl" /></Link>}
         </div>
       </div>
       {error ? <LoadError onRetry={reload} /> : null}
-      {!data ? <Skeleton rows={6} height={56} /> : (
-        <div className="grid-12 live-grid">
-          <div className="col-5 stack">
+      {!data ? <Skeleton rows={6} height={60} /> : (
+        <div className="grid live-grid">
+          <div className="stack">
             {closed ? (
-              <section className="panel closed-panel">
-                <h2>{t.live.closedTitle}</h2>
-                <p className="closed-summary num">{t.live.closedSummary(data.counts.present, data.counts.late, data.counts.absent)}</p>
-              </section>
+              <section className="card closed-card"><h2>{t.live.closedTitle}</h2><p className="num">{t.live.closedSummary(data.counts.present, data.counts.late, data.counts.absent)}</p></section>
             ) : <ScanPanel onCode={(c) => void onCode(c)} disabled={closed} />}
-            {!closed && <ScanResultCard result={last} />}
           </div>
-          <div className="col-7 stack">
-            <section className="panel count-panel" aria-label={t.live.present}>
-              <p className="count-line">
-                <span className="count-big num">{here}</span>
-                <span className="count-of">{t.live.present} <span className="num">{t.live.ofEnrolled(data.enrolled)}</span></span>
-              </p>
-              <div className="count-bar" role="img" aria-label={`${here} / ${data.enrolled}`}>
-                <span style={{ width: `${(data.counts.present / Math.max(data.enrolled, 1)) * 100}%` }} className="seg seg-present" />
-                <span style={{ width: `${(data.counts.late / Math.max(data.enrolled, 1)) * 100}%` }} className="seg seg-late" />
-              </div>
-              <dl className="count-legend">
-                <div><dt><span className="dot dot-present" />{t.status.present}</dt><dd className="num">{data.counts.present}</dd></div>
-                <div><dt><span className="dot dot-late" />{t.status.late}</dt><dd className="num">{data.counts.late}</dd></div>
-                <div><dt><span className="dot dot-wait" />{closed ? t.status.absent : t.live.waiting}</dt><dd className="num">{closed ? data.counts.absent : data.waiting}</dd></div>
-                {data.counts.excused > 0 && <div><dt><span className="dot dot-exc" />{t.status.excused}</dt><dd className="num">{data.counts.excused}</dd></div>}
-              </dl>
-            </section>
+          <div className="stack">
+            {!closed && <ScanResultCard result={last} />}
+            <CountCard state={data} />
             <RosterPanel state={data} onMark={(sid, s) => void mark(sid, s)} />
           </div>
         </div>

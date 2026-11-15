@@ -1,3 +1,5 @@
+import { ShieldCheck } from "kubai-icons-react";
+import { Check, X } from "lucide-react";
 import { useLang } from "../i18n";
 import type { Action } from "./types";
 
@@ -12,7 +14,12 @@ export function ApprovalCard({ actions, onDecide, busy, decided }: {
   };
   return (
     <section className={`approval${decided === undefined ? "" : " approval-done"}`} aria-label={t.assistant.approveTitle}>
-      {decided === undefined && <><h2>{t.assistant.approveTitle}</h2><p className="muted">{t.assistant.approveLead}</p></>}
+      {decided === undefined && (
+        <div className="approval-head" data-kubai-trigger>
+          <span className="tile tile-brand" style={{ width: 46, height: 46 }}><ShieldCheck size={28} color="#0e8a6a" trigger="parent" /></span>
+          <div><h2>{t.assistant.approveTitle}</h2><p className="muted">{t.assistant.approveLead}</p></div>
+        </div>
+      )}
       {actions.map((a) => (
         <div key={a.id} className="approval-action">
           <p className="approval-name">{t.assistant.steps[a.name] ?? a.name}</p>
@@ -26,10 +33,10 @@ export function ApprovalCard({ actions, onDecide, busy, decided }: {
       ))}
       {decided === undefined ? (
         <div className="actions">
-          <button type="button" className="btn btn-primary" disabled={busy} onClick={() => onDecide?.(true)}>{t.assistant.approve}</button>
-          <button type="button" className="btn" disabled={busy} onClick={() => onDecide?.(false)}>{t.assistant.decline}</button>
+          <button type="button" className="btn btn-primary btn-lg" disabled={busy} onClick={() => onDecide?.(true)}><Check aria-hidden="true" />{t.assistant.approve}</button>
+          <button type="button" className="btn btn-lg" disabled={busy} onClick={() => onDecide?.(false)}><X aria-hidden="true" />{t.assistant.decline}</button>
         </div>
-      ) : <p className={decided ? "approval-verdict" : "approval-verdict muted"}>{decided ? t.assistant.approved : t.assistant.declined}</p>}
+      ) : <p className={decided ? "chip chip-present" : "chip chip-waiting"}>{decided ? <Check aria-hidden="true" /> : <X aria-hidden="true" />}{decided ? t.assistant.approved : t.assistant.declined}</p>}
     </section>
   );
 }

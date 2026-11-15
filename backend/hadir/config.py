@@ -34,6 +34,11 @@ TZ = ZoneInfo(os.environ.get("HADIR_TZ", "Asia/Gaza"))
 PUBLIC_ORIGIN = os.environ.get("HADIR_PUBLIC_ORIGIN", "https://hadir.xsobhi.com")
 COOKIE_SECURE = os.environ.get("HADIR_COOKIE_SECURE", "1") == "1"
 
+PABBEL_CLIENT_ID = os.environ.get("HADIR_PABBEL_CLIENT_ID", "")
+PABBEL_CLIENT_SECRET = os.environ.get("HADIR_PABBEL_CLIENT_SECRET", "")
+PABBEL_CONSENT_URL = os.environ.get("HADIR_PABBEL_CONSENT_URL", "https://accounts.pabbel.com/authorize")
+PABBEL_API = os.environ.get("HADIR_PABBEL_API", "https://accounts.pabbel.com/api")
+
 LLM_API_KEY = os.environ.get("HADIR_LLM_API_KEY", "")
 LLM_BASE_URL = os.environ.get("HADIR_LLM_BASE_URL", "https://api.deepseek.com")
 LLM_MODEL = os.environ.get("HADIR_LLM_MODEL", "deepseek-chat")

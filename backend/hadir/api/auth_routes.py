@@ -11,7 +11,7 @@ from ..auth import client_ip, current_user, end_session, hash_password, public_u
 from ..config import DEMO_PER_IP_PER_HOUR
 from ..db import now_iso, tx
 from ..ratelimit import hit
-from ..seed import create_demo_workspace
+from ..seed import create_demo_workspace, seed_workspace
 
 router = APIRouter(prefix="/api/auth")
 EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
@@ -84,4 +84,14 @@ def me(user: dict = Depends(current_user)):
 @router.post("/logout")
 def logout(request: Request, response: Response):
     end_session(request, response)
+    return {"ok": True}
+
+
+@router.post("/sample")
+def load_sample(body: Demo, user: dict = Depends(current_user)):
+    """Give an empty account the three sample courses, so a new professor can try everything first."""
+    with tx() as db:
+        if db.execute("SELECT 1 FROM courses WHERE owner_id = ?", (user["id"],)).fetchone():
+            raise HTTPException(409, "not_empty")
+        seed_workspace(db, user["id"], "en" if body.lang == "en" else "ar")
     return {"ok": True}

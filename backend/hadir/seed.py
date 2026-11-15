@@ -21,19 +21,25 @@ def _term_start(today: date) -> date:
 
 def _people(rng: random.Random, count: int) -> list[dict]:
     seen: set[tuple[str, str]] = set()
+    numbers: set[str] = set()
     people = []
     while len(people) < count:
-        first = rng.choice(FIRST_MALE if rng.random() < 0.5 else FIRST_FEMALE)
+        gender = "m" if rng.random() < 0.5 else "f"
+        first = rng.choice(FIRST_MALE if gender == "m" else FIRST_FEMALE)
         family = rng.choice(FAMILY)
         if (first[1], family[1]) in seen:
             continue
         seen.add((first[1], family[1]))
         major = rng.choice(MAJORS)
         year = rng.choice([2, 2, 3, 3, 3, 4])
+        number = f"120{2026 - year - 2000:02d}{rng.randint(1000, 9999)}"
+        if number in numbers:
+            continue
+        numbers.add(number)
         people.append({
-            "number": f"120{2026 - year - 2000:02d}{rng.randint(1000, 9999)}",
+            "number": number,
             "name_ar": f"{first[0]} {family[0]}", "name_en": f"{first[1]} {family[1]}",
-            "major": major[0] + "|" + major[1], "year": year,
+            "major": major[0] + "|" + major[1], "year": year, "gender": gender,
             # How reliably they come, how often late: most are steady, a few drift towards the limit.
             "show": rng.choice([0.99, 0.98, 0.97, 0.96, 0.95, 0.95, 0.94, 0.93, 0.92, 0.9, 0.87, 0.82, 0.74, 0.66]),
             "late": rng.choice([0.02, 0.04, 0.05, 0.08, 0.12, 0.2]),
@@ -55,28 +61,36 @@ def _meetings(course: dict, term_start: date, until: date) -> list[datetime]:
 def create_demo_workspace(lang: str = "ar") -> int:
     rng = random.Random(secrets.randbits(32))
     created = now()
-    today = created.date()
-    term_start = _term_start(today)
     en = lang == "en"
     with tx() as db:
         user_id = db.execute(
-            "INSERT INTO users (name, email, title, department, is_demo, created_at, expires_at) "
-            "VALUES (?, ?, ?, ?, 1, ?, ?)",
+            "INSERT INTO users (name, email, title, department, is_demo, gender, created_at, expires_at) "
+            "VALUES (?, ?, ?, ?, 1, 'f', ?, ?)",
             (PROFESSOR["name_en"] if en else PROFESSOR["name"], f"demo-{secrets.token_hex(6)}@hadir.local",
              PROFESSOR["title_en"] if en else PROFESSOR["title_ar"],
              PROFESSOR["department_en"] if en else PROFESSOR["department_ar"],
              created.isoformat(timespec="seconds"),
              (created + timedelta(hours=DEMO_TTL_HOURS)).isoformat(timespec="seconds")),
         ).lastrowid
-        people = _people(rng, 96)
-        for p in people:
-            p["id"] = db.execute(
-                "INSERT INTO students (owner_id, number, name_ar, name_en, major, year) VALUES (?, ?, ?, ?, ?, ?)",
-                (user_id, p["number"], p["name_ar"], p["name_en"], p["major"].split("|")[0 if not en else 1], p["year"]),
-            ).lastrowid
-        for spec in COURSES:
-            _seed_course(db, rng, user_id, spec, people, term_start, today, en)
+        seed_workspace(db, user_id, lang, rng)
     return user_id
+
+
+def seed_workspace(db, user_id: int, lang: str, rng: random.Random | None = None) -> None:
+    """Fill an account with the three sample courses, their students and the term's attendance so far."""
+    rng = rng or random.Random(secrets.randbits(32))
+    today = now().date()
+    term_start = _term_start(today)
+    en = lang == "en"
+    people = _people(rng, 96)
+    for p in people:
+        p["id"] = db.execute(
+            "INSERT INTO students (owner_id, number, name_ar, name_en, major, year, gender) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (user_id, p["number"], p["name_ar"], p["name_en"], p["major"].split("|")[0 if not en else 1], p["year"],
+             p["gender"]),
+        ).lastrowid
+    for spec in COURSES:
+        _seed_course(db, rng, user_id, spec, people, term_start, today, en)
 
 
 def _seed_course(db, rng, user_id, spec, people, term_start, today, en) -> None:

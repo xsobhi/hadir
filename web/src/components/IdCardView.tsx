@@ -1,9 +1,9 @@
 import JsBarcode from "jsbarcode";
 import { useEffect, useRef } from "react";
 import { useLang } from "../i18n";
-import { initials, personHue } from "../i18n/format";
+import { Avatar } from "./Avatar";
 
-type Student = { number: string; nameAr: string; nameEn: string; major: string };
+type Student = { number: string; nameAr: string; nameEn: string; major: string; gender?: string };
 
 /** A sample university ID card at credit-card proportions, its Code 128 barcode encoding the student number. */
 export function IdCardView({ student }: { student: Student }) {
@@ -16,7 +16,6 @@ export function IdCardView({ student }: { student: Student }) {
       });
     }
   }, [student.number]);
-  const hue = personHue(student.number);
   return (
     <figure className="idcard" aria-label={`${t.cards.studentCard}: ${student.nameAr}, ${student.number}`}>
       <div className="idcard-top">
@@ -24,9 +23,7 @@ export function IdCardView({ student }: { student: Student }) {
         <span className="idcard-uni" lang="en" dir="ltr">{t.cards.university}</span>
       </div>
       <div className="idcard-body">
-        <span className="idcard-photo" style={{ background: `hsl(${hue} 30% 88%)`, color: `hsl(${hue} 30% 30%)` }} aria-hidden="true">
-          {initials(student.nameEn)}
-        </span>
+        <Avatar seed={student.number} gender={student.gender} size={60} className="idcard-photo" />
         <div className="idcard-names">
           <p className="idcard-ar" lang="ar" dir="rtl">{student.nameAr}</p>
           <p className="idcard-en" lang="en" dir="ltr">{student.nameEn}</p>

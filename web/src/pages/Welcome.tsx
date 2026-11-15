@@ -1,11 +1,19 @@
+import { BotSparkle, ScanBarcode, TriangleAlert } from "kubai-icons-react";
+import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import type { User } from "../api/types";
 import { useAuth } from "../auth/AuthContext";
+import { PabbelButton } from "../components/public/PabbelButton";
 import { PublicBar } from "../components/public/PublicBar";
 import { ScanFragment } from "../components/public/ScanFragment";
+import { Tile, type Tone } from "../components/ui/Tile";
 import { useLang } from "../i18n";
+
+const POINTS: { icon: typeof ScanBarcode; tone: Tone }[] = [
+  { icon: ScanBarcode, tone: "brand" }, { icon: TriangleAlert, tone: "amber" }, { icon: BotSparkle, tone: "violet" },
+];
 
 export default function Welcome() {
   const { t, lang } = useLang();
@@ -36,17 +44,21 @@ export default function Welcome() {
           <div className="welcome-copy">
             <h1>{w.title}</h1>
             <p className="welcome-lead">{w.lead}</p>
-            <div className="actions">
-              <button type="button" className="btn btn-primary btn-lg" onClick={() => void demo()} disabled={busy}>{w.tryDemo}</button>
-              <Link to="/signup" className="btn btn-lg">{w.signUp}</Link>
+            <div className="welcome-actions">
+              <button type="button" className="btn btn-primary btn-lg" onClick={() => void demo()} disabled={busy}><Sparkles aria-hidden="true" />{w.tryDemo}</button>
+              <PabbelButton />
             </div>
             <p className="muted small">{failed ? <span className="error-text">{t.auth.demoFailed}</span> : w.tryDemoNote}</p>
           </div>
           <ScanFragment />
         </section>
         <section className="welcome-points" aria-label={w.title}>
-          {w.points.map((p) => (
-            <div key={p.title}><h2>{p.title}</h2><p>{p.body}</p></div>
+          {w.points.map((p, i) => (
+            <article key={p.title} className="point card" data-kubai-trigger>
+              <Tile icon={POINTS[i].icon} tone={POINTS[i].tone} size={56} />
+              <h2>{p.title}</h2>
+              <p>{p.body}</p>
+            </article>
           ))}
         </section>
         <footer className="public-foot">

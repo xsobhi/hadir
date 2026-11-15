@@ -1,29 +1,38 @@
-import { CircleCheck, Clock } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import { useLang } from "../../i18n";
+import { Avatar } from "../Avatar";
+import { StatusChip } from "../ui/Status";
 
-/** A real piece of the live screen, drawn with the app's own styles, for the welcome page. */
+const ROWS = [
+  { ar: "ليان الشوا", en: "Layan Al-Shawwa", n: "120236118", g: "f", at: "08:02", s: "present" },
+  { ar: "حمزة أبو عودة", en: "Hamza Abu Odeh", n: "120241907", g: "m", at: "08:04", s: "present" },
+  { ar: "آية سكيك", en: "Aya Skaik", n: "120229344", g: "f", at: "08:13", s: "late" },
+] as const;
+
+/** A real piece of the live screen, built from the app's own components, for the welcome page. */
 export function ScanFragment() {
-  const { t, lang } = useLang();
-  const rows = lang === "ar"
-    ? [["ليان الشوا", "120236118", "08:02", "present"], ["حمزة أبو عودة", "120241907", "08:04", "present"], ["آية سكيك", "120229344", "08:13", "late"]]
-    : [["Layan Al-Shawwa", "120236118", "08:02", "present"], ["Hamza Abu Odeh", "120241907", "08:04", "present"], ["Aya Skaik", "120229344", "08:13", "late"]];
+  const { t, pick } = useLang();
   return (
     <div className="fragment" data-ui aria-hidden="true">
-      <p className="fragment-course">{t.auth.welcome.fragmentCourse}</p>
-      <p className="count-line"><span className="count-big num">31</span><span className="count-of">{t.live.present} <span className="num">{t.live.ofEnrolled(38)}</span></span></p>
-      <div className="count-bar"><span className="seg seg-present" style={{ width: "76%" }} /><span className="seg seg-late" style={{ width: "5%" }} /></div>
-      <div className="scan-card scan-ok">
-        <CircleCheck className="scan-icon" />
-        <div className="scan-text">
-          <p className="scan-head">{t.live.result.present}<span className="scan-name">{rows[1][0]}</span></p>
-          <p className="scan-sub num"><span className="ltr">{rows[1][1]}</span> · {rows[1][2]}</p>
+      <div className="fragment-top">
+        <span className="chip chip-present live-chip">{t.live.title}</span>
+        <span className="fragment-course">{t.auth.welcome.fragmentCourse}</span>
+      </div>
+      <div className="result result-ok fragment-result">
+        <Avatar seed={ROWS[1].n} gender={ROWS[1].g} size={58} />
+        <div className="result-text">
+          <p className="result-head"><CircleCheck aria-hidden="true" />{t.live.result.present}</p>
+          <p className="result-name">{pick(ROWS[1].ar, ROWS[1].en)}</p>
+          <p className="result-sub num"><span dir="ltr">{ROWS[1].n}</span> · {ROWS[1].at}</p>
         </div>
       </div>
+      <div className="fragment-count"><strong className="num">31</strong><span>{t.live.present} {t.live.ofEnrolled(38)}</span></div>
+      <div className="fragment-bar"><span style={{ width: "76%" }} /><span className="late" style={{ width: "5%" }} /></div>
       <ul className="rows">
-        {rows.map(([name, num, at, st]) => (
-          <li key={num} className="row fragment-row">
-            <span className="person-text"><span className="person-name">{name}</span><span className="person-sub num">{num}</span></span>
-            <span className={st === "late" ? "status-late" : ""}>{st === "late" ? <Clock className="inline-icon" /> : null}{t.status[st as "present"]} <span className="num muted">{at}</span></span>
+        {ROWS.map((r) => (
+          <li key={r.n} className="row fragment-row">
+            <span className="person"><Avatar seed={r.n} gender={r.g} size={36} /><span className="person-text"><span className="person-name">{pick(r.ar, r.en)}</span><span className="person-sub num">{r.n}</span></span></span>
+            <StatusChip status={r.s} time={r.at} />
           </li>
         ))}
       </ul>

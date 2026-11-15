@@ -32,21 +32,21 @@ export function RosterTab({ detail, onChange }: { detail: CourseDetail; onChange
   };
   const students = [...detail.students].sort((a, b) => pick(a.nameAr, a.nameEn).localeCompare(pick(b.nameAr, b.nameEn)));
   return (
-    <div className="grid-12">
-      <section className="panel col-7" aria-labelledby="roster-h">
-        <div className="panel-head"><h2 id="roster-h">{t.course.roster}</h2><span className="muted num">{students.length}</span></div>
+    <div className="grid cols-main">
+      <section className="card" aria-labelledby="roster-h">
+        <div className="card-head"><h2 id="roster-h">{t.course.roster}</h2><span className="muted num">{students.length}</span></div>
         <ul className="rows">
           {students.map((s) => (
             <li key={s.id} className="row roster-list-row">
-              <Link to={`/app/students/${s.id}`}><Person nameAr={s.nameAr} nameEn={s.nameEn} number={s.number} /></Link>
+              <Link to={`/app/students/${s.id}`}><Person nameAr={s.nameAr} nameEn={s.nameEn} number={s.number} gender={s.gender} /></Link>
               <span className="muted small">{s.major}</span>
               <button type="button" className="btn btn-ghost" onClick={() => void remove(s.id, pick(s.nameAr, s.nameEn))}>{t.remove}</button>
             </li>
           ))}
         </ul>
       </section>
-      <div className="col-5 stack">
-        <form className="panel form-grid" onSubmit={addOne} aria-labelledby="add-h">
+      <div className="stack">
+        <form className="card form-grid" onSubmit={addOne} aria-labelledby="add-h">
           <h2 id="add-h" className="span-2">{t.course.addStudent}</h2>
           <div className="field"><label htmlFor="sn">{t.number}</label>
             <input id="sn" className="input num" dir="ltr" value={one.number} onChange={(e) => setOne({ ...one, number: e.target.value })} required minLength={3} /></div>
@@ -58,7 +58,7 @@ export function RosterTab({ detail, onChange }: { detail: CourseDetail; onChange
             <input id="se" className="input" dir="ltr" value={one.nameEn} onChange={(e) => setOne({ ...one, nameEn: e.target.value })} /></div>
           <div className="span-2 form-foot"><button type="submit" className="btn">{t.course.addStudent}</button></div>
         </form>
-        <form className="panel field" onSubmit={addMany}>
+        <form className="card field" onSubmit={addMany}>
           <h2><label htmlFor="paste">{t.course.pasteTitle}</label></h2>
           <textarea id="paste" className="input num" rows={5} dir="auto" value={paste} onChange={(e) => setPaste(e.target.value)} aria-describedby="paste-hint" />
           <p id="paste-hint" className="muted small">{t.course.pasteHint}</p>

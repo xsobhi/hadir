@@ -39,4 +39,16 @@ export const auth: typeof en = {
     badEmail: "أدخل بريدًا إلكترونيًا صحيحًا.",
   },
   demoFailed: "تعذّر فتح مساحة تجريبية. حاول مرة أخرى بعد دقيقة.",
+  pabbel: "الدخول عبر Pabbel",
+  pabbelNote: "استخدم حسابك في Pabbel. لا يرى «حاضر» إلا اسمك وبريدك.",
+  or: "أو",
+  pabbelErrors: {
+    state: "انتهت صلاحية رابط الدخول. ابدأ من جديد.",
+    cancelled: "أُلغي الدخول عبر Pabbel.",
+    exchange: "لم يتمكن Pabbel من تأكيد الدخول. حاول مرة أخرى.",
+    pabbel_off: "الدخول عبر Pabbel غير مفعّل هنا بعد.",
+  } as Record<string, string>,
+  sampleTitle: "مساحتك فارغة",
+  sampleLead: "أضف أول مساق لك، أو حمّل ثلاثة مساقات تجريبية لتجرّب المسح والكشف والمساعد.",
+  sampleLoad: "تحميل مساقات تجريبية",
 };

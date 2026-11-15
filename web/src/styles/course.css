@@ -1,69 +1,45 @@
-/* The course page: figures, per-class bars, and the roll-call register. */
-.page-tabs { margin: 8px 0 16px; }
-.small-finding { font-size: 14px; margin: 6px 0 12px; color: var(--muted); font-weight: 400; }
-.kpi-panel { background: var(--surface); align-self: stretch; }
-.kpi-panel > div { display: flex; flex-direction: column; justify-content: center; }
-.kpi-unit { font-size: 15px; color: var(--muted); font-weight: 400; }
-.bars-panel { padding: 14px 16px 8px; }
-
-.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); }
+/* Course: tabs, the register with icon badges, roster and settings forms. */
+.page-tabs { margin: 0 0 var(--gap); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13.5px; color: var(--text-2); font-weight: 500; }
 .legend li { display: flex; align-items: center; gap: 6px; }
-
-/* Marks: present is a quiet grey dot, late an ink ring, absent a solid ink block, excused a dashed box. */
-.mk { display: inline-block; width: 10px; height: 10px; vertical-align: middle; }
-.mk-present { width: 7px; height: 7px; border-radius: 50%; background: #a9a8a4; }
-.mk-late { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--text); }
-.mk-absent { width: 10px; height: 10px; border-radius: 2px; background: var(--text); }
-.mk-excused { width: 10px; height: 10px; border-radius: 2px; border: 1.5px dashed var(--muted); }
-.mk-none { width: 6px; height: 1.5px; background: #c9c8c4; }
-
-.register-scroll { overflow-x: auto; margin: 0 calc(var(--card-pad) * -1); padding: 0 var(--card-pad); }
+.register-card { padding-bottom: 12px; }
+.register-scroll { overflow-x: auto; margin: 0 -22px; padding: 0 22px 6px; }
 .register { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13px; }
-.register th, .register td { padding: 0; height: 36px; border-bottom: 1px solid var(--rule); }
-.register thead th { height: 30px; font-weight: 400; color: var(--muted); font-size: 11.5px; border-bottom-color: var(--border); }
-.reg-name {
-  position: sticky; inset-inline-start: 0; background: var(--surface); z-index: 1; text-align: start;
-  min-width: 190px; padding-inline-end: 12px !important; font-weight: 400;
-}
-tbody .reg-name { height: 46px; }
-.reg-name-in { display: flex; flex-direction: column; line-height: 1.3; }
-tbody .reg-name a { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
-tbody .reg-name a:hover { text-decoration: underline; text-underline-offset: 3px; }
-tbody .reg-name .muted { font-size: 11.5px; }
-.reg-day { min-width: 30px; text-align: center; }
-.reg-cell { text-align: center; min-width: 30px; }
-.reg-latest { background: var(--data-soft); }
-thead .reg-latest { color: var(--data); font-weight: 600 !important; border-radius: 4px 4px 0 0; }
-.reg-fig { text-align: end; min-width: 52px; padding-inline-start: 12px !important; font-weight: 500; }
-.reg-track { text-align: end; padding-inline-start: 16px !important; white-space: nowrap; }
-.lvl-over .reg-name a { color: var(--negative); }
-.reg-note { margin-top: 10px; }
-.register tbody tr:hover td, .register tbody tr:hover th { background: var(--raised); }
-.register tbody tr:hover .reg-latest { background: #dfe7f5; }
+.register th, .register td { padding: 0; border-bottom: 1px solid var(--line-2); }
+.register thead th { height: 36px; font-weight: 700; color: var(--text-3); font-size: 12px; border-bottom: 0; }
+.reg-name { position: sticky; inset-inline-start: 0; z-index: 1; background: var(--surface); text-align: start; min-width: 220px; padding-inline-end: 14px !important; }
+tbody .reg-name { height: 58px; }
+tbody .reg-name .person:hover .person-name { color: var(--brand-600); }
+.reg-day, .reg-cell { min-width: 36px; text-align: center; }
+.reg-latest { background: var(--brand-50); }
+thead .reg-latest { color: var(--brand-700); border-radius: 10px 10px 0 0; }
+tbody tr:last-child .reg-latest { border-radius: 0 0 10px 10px; }
+.reg-sum { text-align: start; padding-inline-start: 18px !important; min-width: 170px; }
+.register tbody tr:hover th, .register tbody tr:hover td { background: var(--surface-2); }
+.register tbody tr:hover .reg-latest { background: #ddf3ea; }
 
-.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-content: start; }
 .span-2 { grid-column: span 2; }
 .form-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
-.error-text { color: var(--negative); }
 fieldset.days { border: 0; padding: 0; margin: 0; }
-fieldset.days legend { font-weight: 500; margin-bottom: 8px; padding: 0; }
-.day-row { display: flex; gap: 6px; flex-wrap: wrap; }
+fieldset.days legend { margin-bottom: 8px; padding: 0; }
+.day-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .day-chip input { position: absolute; opacity: 0; pointer-events: none; }
 .day-chip span {
-  display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: var(--radius-control);
-  border: 1px solid var(--control); background: var(--surface); cursor: pointer; transition: background-color 140ms ease;
+  display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 12px; font-weight: 700;
+  border: 1.5px solid var(--line); background: var(--surface); cursor: pointer; transition: all 150ms ease;
 }
-.day-chip input:checked + span { background: var(--primary); border-color: var(--primary); color: #fff; }
-.day-chip input:focus-visible + span { outline: 2px solid var(--data); outline-offset: 2px; }
+.day-chip input:checked + span { background: var(--brand); border-color: var(--brand); color: #fff; }
+.day-chip input:focus-visible + span { outline: 3px solid var(--brand-100); outline-offset: 2px; }
 .danger-zone { display: grid; gap: 12px; align-content: start; }
-.danger-zone .btn { justify-self: start; border-color: #e6b7b4; }
+.danger-zone .btn { justify-self: start; }
 .roster-list-row { grid-template-columns: minmax(0, 1fr) auto auto; }
 
 @media (max-width: 640px) {
   .form-grid { grid-template-columns: minmax(0, 1fr); }
   .span-2 { grid-column: auto; }
-  .reg-name { min-width: 140px; }
-  tbody .reg-name a { max-width: 140px; }
+  .reg-name { min-width: 160px; }
+  .register-scroll { margin: 0 -16px; padding: 0 16px 6px; }
   .roster-list-row { grid-template-columns: minmax(0, 1fr) auto; }
   .roster-list-row .small { display: none; }
 }

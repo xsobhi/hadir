@@ -32,7 +32,7 @@ def level(used: int, allowed: int) -> str:
 def student_summaries(db, course: dict) -> list[dict]:
     """One row per enrolled student with their counts this term, worst first."""
     rows = db.execute(
-        "SELECT s.id, s.number, s.name_ar, s.name_en, s.major, s.year, a.status "
+        "SELECT s.id, s.number, s.name_ar, s.name_en, s.major, s.year, s.gender, a.status "
         "FROM enrollments e JOIN students s ON s.id = e.student_id "
         "LEFT JOIN attendance a ON a.student_id = s.id AND a.session_id IN "
         "  (SELECT id FROM class_sessions WHERE course_id = ? AND status = 'closed') "
@@ -44,7 +44,7 @@ def student_summaries(db, course: dict) -> list[dict]:
     for r in rows:
         p = people.setdefault(r["id"], {
             "id": r["id"], "number": r["number"], "nameAr": r["name_ar"], "nameEn": r["name_en"],
-            "major": r["major"], "year": r["year"], "counts": Counter(),
+            "major": r["major"], "year": r["year"], "gender": r["gender"], "counts": Counter(),
         })
         if r["status"]:
             p["counts"][r["status"]] += 1

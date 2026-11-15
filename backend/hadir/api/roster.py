@@ -22,6 +22,7 @@ class StudentIn(BaseModel):
     nameEn: str = Field(default="", max_length=80)
     major: str = Field(default="", max_length=80)
     year: int = Field(default=1, ge=1, le=7)
+    gender: str = Field(default="", pattern="^(m|f|)$")
 
 
 class Paste(BaseModel):
@@ -41,8 +42,8 @@ def _enroll(db, owner_id: int, course_id: int, s: StudentIn) -> int:
         student_id = row["id"]
     else:
         student_id = db.execute(
-            "INSERT INTO students (owner_id, number, name_ar, name_en, major, year) VALUES (?, ?, ?, ?, ?, ?)",
-            (owner_id, number, s.nameAr.strip(), s.nameEn.strip() or s.nameAr.strip(), s.major.strip(), s.year),
+            "INSERT INTO students (owner_id, number, name_ar, name_en, major, year, gender) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (owner_id, number, s.nameAr.strip(), s.nameEn.strip() or s.nameAr.strip(), s.major.strip(), s.year, s.gender),
         ).lastrowid
     db.execute("INSERT OR IGNORE INTO enrollments (course_id, student_id) VALUES (?, ?)", (course_id, student_id))
     return student_id

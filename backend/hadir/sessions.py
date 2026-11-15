@@ -57,12 +57,13 @@ def scan(db, owner_id: int, session: dict, course: dict, code: str) -> dict:
     'ok', 'duplicate', 'not_enrolled' or 'unknown'."""
     number = "".join(ch for ch in code if ch.isalnum())[:32]
     student = db.execute(
-        "SELECT id, number, name_ar, name_en FROM students WHERE owner_id = ? AND number = ?",
+        "SELECT id, number, name_ar, name_en, gender FROM students WHERE owner_id = ? AND number = ?",
         (owner_id, number),
     ).fetchone()
     if not student:
         return {"result": "unknown", "code": number}
-    view = {"id": student["id"], "number": student["number"], "nameAr": student["name_ar"], "nameEn": student["name_en"]}
+    view = {"id": student["id"], "number": student["number"], "nameAr": student["name_ar"], "nameEn": student["name_en"],
+            "gender": student["gender"]}
     enrolled = db.execute(
         "SELECT 1 FROM enrollments WHERE course_id = ? AND student_id = ?", (course["id"], student["id"]),
     ).fetchone()

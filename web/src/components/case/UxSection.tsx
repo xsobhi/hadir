@@ -1,11 +1,14 @@
+import { UsersStar } from "kubai-icons-react";
 import type { CaseStudy } from "../../content/case-study";
+import { Avatar } from "../Avatar";
+import { Tile } from "../ui/Tile";
 import type { Labels } from "./labels";
 
 export function UxSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
   const ux = cs.ux;
   return (
     <section className="cs-section" aria-labelledby="ux-h">
-      <h2 id="ux-h">{l.ux}</h2>
+      <h2 id="ux-h" data-kubai-trigger><Tile icon={UsersStar} tone="violet" size={52} />{l.ux}</h2>
       <div className="cs-split">
         <h3>{l.problem}</h3>
         <p className="cs-statement">{ux.problem}</p>
@@ -14,8 +17,10 @@ export function UxSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
       <div className="personas">
         {ux.personas.map((p) => (
           <article key={p.name} className="persona">
-            <p className="persona-name">{p.name}</p>
-            <p className="muted small">{p.role}</p>
+            <div className="persona-top">
+              <Avatar seed={p.name} size={52} />
+              <div><p className="persona-name">{p.name}</p><p className="muted small">{p.role}</p></div>
+            </div>
             <p className="persona-context">{p.context}</p>
             <p className="persona-label">{l.goals}</p>
             <ul className="cs-list">{p.goals.map((g) => <li key={g}>{g}</li>)}</ul>

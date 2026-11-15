@@ -30,4 +30,4 @@ def own_student(db, owner_id: int, student_id: int) -> dict:
 
 def student_public(s: dict) -> dict:
     return {"id": s["id"], "number": s["number"], "nameAr": s["name_ar"], "nameEn": s["name_en"],
-            "major": s["major"], "year": s["year"]}
+            "major": s["major"], "year": s["year"], "gender": s.get("gender", "")}

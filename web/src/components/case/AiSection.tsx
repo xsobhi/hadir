@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import { BotSparkle } from "kubai-icons-react";
 import type { CaseStudy } from "../../content/case-study";
+import { Tile } from "../ui/Tile";
 import { useLang } from "../../i18n";
 import { AgentDiagram } from "./AgentDiagram";
 import type { Labels } from "./labels";
@@ -10,7 +12,7 @@ export function AiSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
   const ar = lang === "ar";
   return (
     <section className="cs-section" aria-labelledby="ai-h">
-      <h2 id="ai-h">{l.ai}</h2>
+      <h2 id="ai-h" data-kubai-trigger><Tile icon={BotSparkle} tone="amber" size={52} />{l.ai}</h2>
       <div className="cs-split"><h3>{l.graph}</h3><p className="cs-statement">{ai.summary}</p></div>
       <div className="cs-columns cs-ai">
         <AgentDiagram read={ar ? "قراءة" : "read"} write={ar ? "تعديل" : "write"} approve={ar ? "موافقة" : "approve"}

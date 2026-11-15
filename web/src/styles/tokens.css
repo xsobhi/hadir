@@ -1,46 +1,43 @@
-/* Achromatic ledger: ink chrome, one blue for the main data element, paper ground taken from the roll-call sheet. */
+/* Hadir "Campus" tokens: Tajawal, a fresh teal-green brand, one soft tint per meaning, rounded cards. */
 :root {
-  --ground: #f4f3f1;
+  --ground: #f3f5f9;
   --surface: #ffffff;
-  --raised: #f7f6f4;
-  --active: #e9e8e5;
-  --border: #e4e3e0;
-  --rule: #efeeeb;
-  --control: #d2d1cd;
-  --text: #0a0a0a;
-  --muted: #5f5f5c;
-  --faint: #6b6b68;
-  --primary: #141414;
-  --on-primary: #ffffff;
-  --secondary: #e5e5e3;
-  --data: #1d5fbf;
-  --data-soft: #e8eef8;
-  --positive: #23744a;
-  --negative: #c4242a;
-  --warning: #92400e;
-  --pill-positive-bg: #dcfae5; --pill-positive-ink: #04250e;
-  --pill-negative-bg: #ffedea; --pill-negative-ink: #831c1e;
-  --pill-warning-bg: #fffbeb;  --pill-warning-ink: #92400e;  --pill-warning-edge: #fde68a;
-  --pill-neutral-bg: #ecebe8;  --pill-neutral-ink: #3d3d3b;
-  --grid: #e5e4e1;
+  --surface-2: #f8fafc;
+  --line: #e7ebf1;
+  --line-2: #eef1f5;
+  --control: #d5dbe4;
+  --text: #0f172a;
+  --text-2: #475569;
+  --text-3: #64748b;
 
-  --radius-card: 8px;
-  --radius-control: 6px;
-  --radius-chip: 4px;
-  --gap: 16px;
-  --card-pad: 20px;
+  --brand: #0e8a6a;
+  --brand-600: #0b7358;
+  --brand-700: #095e49;
+  --brand-50: #e9f7f2;
+  --brand-100: #cdeee2;
+  --blue: #2563eb;    --blue-50: #eaf1ff;
+  --amber: #b45309;   --amber-50: #fff3df;  --amber-dot: #f59e0b;
+  --rose: #e11d48;    --rose-50: #ffe9ee;
+  --violet: #7c3aed;  --violet-50: #f1eaff;
+  --sky: #0284c7;     --sky-50: #e3f4fd;
+
+  --present: #15803d; --present-50: #e5f7ec; --present-dot: #22c55e;
+  --late: var(--amber); --late-50: var(--amber-50);
+  --absent: var(--rose); --absent-50: var(--rose-50);
+  --excused: var(--blue); --excused-50: var(--blue-50);
+  --waiting: #64748b; --waiting-50: #f1f5f9;
+
+  --radius-lg: 22px;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 24px 48px -20px rgba(15, 23, 42, 0.28);
+  --sidebar-width: 268px;
   --pad: 32px;
-  --sidebar-width: 248px;
-  --nav-row: 34px;
-  --control-height: 36px;
-  --row-height: 44px;
+  --gap: 20px;
 
-  --font: "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --fs-title: 24px;
-  --fs-section: 16px;
-  --fs-kpi: 30px;
-  --fs-body: 14px;
-  --fs-small: 12px;
-
+  --font: "Tajawal", system-ui, sans-serif;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }

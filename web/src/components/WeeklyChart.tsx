@@ -41,7 +41,7 @@ export function WeeklyChart({ weeks, totalWeeks, currentWeek, height = 180 }: Pr
         if (rate == null) return null;
         const isLatest = week === latest;
         return (
-          <rect key={week} x={xOf(week)} y={yOf(rate)} width={bar} height={plotH * rate}
+          <rect key={week} x={xOf(week)} y={yOf(rate)} width={bar} height={plotH * rate} rx={Math.min(6, bar / 2)}
             className={isLatest ? "bar bar-data" : "bar"}>
             <title>{`${t.week(week, totalWeeks)} · ${pct(rate)}`}</title>
           </rect>

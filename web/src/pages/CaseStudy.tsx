@@ -5,6 +5,7 @@ import { CertList } from "../components/case/CertList";
 import { labels } from "../components/case/labels";
 import { PmSection } from "../components/case/PmSection";
 import { UxSection } from "../components/case/UxSection";
+import { Avatar } from "../components/Avatar";
 import { PublicBar } from "../components/public/PublicBar";
 import { caseStudy } from "../content/case-study";
 import { useLang } from "../i18n";
@@ -21,7 +22,7 @@ export default function CaseStudy() {
         <header className="cs-head">
           <h1>{cs.title}</h1>
           <p className="cs-lead">{cs.lead}</p>
-          <p className="cs-author"><strong>{cs.author.name}</strong> · {cs.author.line}</p>
+          <p className="cs-author"><Avatar seed="sobhi-al-firani" gender="m" size={44} /><span><strong>{cs.author.name}</strong> · {cs.author.line}</span></p>
           <nav className="cs-toc" aria-label={cs.title}>
             <a href="#certs-h" className="link">{l.certs}</a>
             <a href="#ux-h" className="link">{l.ux}</a>

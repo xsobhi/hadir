@@ -37,4 +37,16 @@ export const auth = {
     badEmail: "Enter a valid email address.",
   },
   demoFailed: "Couldn't open a demo workspace. Try again in a minute.",
+  pabbel: "Sign in with Pabbel",
+  pabbelNote: "Use your Pabbel account. Hadir only sees your name and email.",
+  or: "or",
+  pabbelErrors: {
+    state: "That sign-in link expired. Start again.",
+    cancelled: "Sign-in with Pabbel was cancelled.",
+    exchange: "Pabbel couldn't confirm the sign-in. Try again.",
+    pabbel_off: "Sign in with Pabbel isn't set up here yet.",
+  } as Record<string, string>,
+  sampleTitle: "Your workspace is empty",
+  sampleLead: "Add your first course, or load three sample courses to try scanning, the register and the assistant.",
+  sampleLoad: "Load sample courses",
 };

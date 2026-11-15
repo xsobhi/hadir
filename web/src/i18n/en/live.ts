@@ -45,4 +45,8 @@ export const live = {
   backToCourse: "Back to the course",
   sound: "Sound",
   manualNote: "Marked by hand",
+  scanTitle: "Scan a student card",
+  steps: ["Turn on the camera", "Hold the card's barcode in the frame", "A beep confirms it"],
+  searchRoster: "Find a student to mark by hand",
+  here: "here",
 };

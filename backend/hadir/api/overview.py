@@ -41,8 +41,13 @@ def overview(user: dict = Depends(current_user)):
     current_week = None
     if courses:
         current_week = (today - date.fromisoformat(courses[0]["term_start"])).days // 7 + 1
+    with tx() as db:
+        student_count = db.execute(
+            "SELECT COUNT(DISTINCT e.student_id) AS n FROM enrollments e JOIN courses c ON c.id = e.course_id "
+            "WHERE c.owner_id = ?", (user["id"],)).fetchone()["n"]
     return {
         "today": today.isoformat(),
+        "studentCount": student_count,
         "termWeek": current_week,
         "termWeeks": courses[0]["term_weeks"] if courses else None,
         "courses": items,

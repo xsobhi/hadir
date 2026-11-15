@@ -43,6 +43,14 @@ def init_db() -> None:
     try:
         conn.execute("PRAGMA journal_mode = WAL")
         conn.executescript(SCHEMA.read_text(encoding="utf-8"))
+        # Columns added after the first release: add them to databases created before.
+        added = (("students", "gender", "TEXT NOT NULL DEFAULT ''"), ("users", "gender", "TEXT NOT NULL DEFAULT ''"),
+                 ("users", "pabbel_id", "TEXT"))
+        for table, column, kind in added:
+            names = {r["name"] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()}
+            if column not in names:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {kind}")
+        conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS users_pabbel ON users(pabbel_id) WHERE pabbel_id IS NOT NULL")
         conn.commit()
     finally:
         conn.close()

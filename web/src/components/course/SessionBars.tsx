@@ -11,7 +11,7 @@ export function SessionBars({ sessions }: { sessions: SessionRate[] }) {
   const H = 170, top = 8, bottom = 24, axis = 40;
   const plotW = W - axis - 8, plotH = H - top - bottom;
   const n = Math.max(sessions.length, 1);
-  const slot = plotW / n, bar = Math.min(16, slot * 0.6);
+  const slot = plotW / n, bar = Math.min(22, slot * 0.62);
   const x = (i: number) => { const v = axis + i * slot + (slot - bar) / 2; return rtl ? W - v - bar : v; };
   const y = (r: number) => top + plotH * (1 - r);
   const step = Math.max(1, Math.ceil(n / Math.max(3, Math.floor(W / 90))));
@@ -26,7 +26,7 @@ export function SessionBars({ sessions }: { sessions: SessionRate[] }) {
         </g>
       ))}
       {sessions.map((s, i) => (
-        <rect key={s.id} x={x(i)} y={y(s.rate)} width={bar} height={plotH * s.rate}
+        <rect key={s.id} x={x(i)} y={y(s.rate)} width={bar} height={plotH * s.rate} rx={Math.min(5, bar / 2)}
           className={i === sessions.length - 1 ? "bar bar-data" : "bar"}>
           <title>{`${day(s.startsAt, lang)} · ${s.topic} · ${pct(s.rate)}`}</title>
         </rect>

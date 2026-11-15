@@ -1,31 +1,28 @@
 import { Link } from "react-router-dom";
-import type { CourseDetail } from "../../api/types";
+import type { CourseDetail, Status } from "../../api/types";
 import { useLang } from "../../i18n";
 import { day, shortDay } from "../../i18n/format";
-import { AllowanceTrack } from "../AllowanceTrack";
+import { Avatar } from "../Avatar";
+import { AbsenceBar, StatusDot } from "../ui/Status";
 
-const KIND: Record<string, string> = { P: "present", L: "late", A: "absent", E: "excused", "-": "none" };
+const KIND: Record<string, Status | null> = { P: "present", L: "late", A: "absent", E: "excused", "-": null };
 
-export function Mark({ code }: { code: string }) {
-  return <span className={`mk mk-${KIND[code] ?? "none"}`} aria-hidden="true" />;
-}
-
-/** The roll-call sheet: a row per student, a column per class (oldest at the start), the latest class in blue. */
+/** The roll-call sheet: a row per student, a column per class (oldest first), each mark an icon badge. */
 export function Register({ detail }: { detail: CourseDetail }) {
   const { t, lang, pick } = useLang();
   const { sessions, students } = detail;
   const latest = sessions.length - 1;
-  const legend = [["P", t.course.legendPresent], ["L", t.course.legendLate], ["A", t.course.legendAbsent], ["E", t.course.legendExcused]];
+  const legend: Status[] = ["present", "late", "absent", "excused"];
   return (
-    <section className="panel register-panel" aria-labelledby="reg-h">
-      <div className="panel-head">
-        <h2 id="reg-h">{t.course.register}</h2>
+    <section className="card register-card" aria-labelledby="reg-h">
+      <div className="card-head">
+        <div className="card-title"><div><h2 id="reg-h">{t.course.register}</h2><p>{t.course.registerNote}</p></div></div>
         <ul className="legend">
-          {legend.map(([code, label]) => <li key={code}><Mark code={code} />{label}</li>)}
+          {legend.map((s) => <li key={s}><StatusDot status={s} />{t.status[s]}</li>)}
         </ul>
       </div>
-      {sessions.length === 0 ? <p className="empty-line">{t.course.noSessions}</p> : (
-        <div className="register-scroll" tabIndex={0} aria-label={t.course.registerNote}>
+      {sessions.length === 0 ? <p className="empty">{t.course.noSessions}</p> : (
+        <div className="register-scroll" tabIndex={0} aria-label={t.course.register}>
           <table className="register">
             <thead>
               <tr>
@@ -35,36 +32,30 @@ export function Register({ detail }: { detail: CourseDetail }) {
                     <span className="num" dir="ltr">{shortDay(s.startsAt)}</span>
                   </th>
                 ))}
-                <th scope="col" className="reg-fig">{t.course.absentCol}</th>
-                <th scope="col" className="reg-fig">{t.course.lateCol}</th>
-                <th scope="col" className="reg-track">{t.course.allowanceCol}</th>
+                <th scope="col" className="reg-sum">{t.course.allowanceCol}</th>
               </tr>
             </thead>
             <tbody>
               {students.map((s) => (
-                <tr key={s.id} className={`lvl-${s.level}`}>
+                <tr key={s.id}>
                   <th scope="row" className="reg-name">
-                    <span className="reg-name-in">
-                      <Link to={`/app/students/${s.id}`}>{pick(s.nameAr, s.nameEn)}</Link>
-                      <span className="num muted">{s.number}</span>
-                    </span>
+                    <Link to={`/app/students/${s.id}`} className="person">
+                      <Avatar seed={s.number} gender={s.gender} size={34} />
+                      <span className="person-text"><span className="person-name">{pick(s.nameAr, s.nameEn)}</span><span className="person-sub num">{s.number}</span></span>
+                    </Link>
                   </th>
                   {[...s.register].map((code, i) => (
-                    <td key={i} className={i === latest ? "reg-cell reg-latest" : "reg-cell"}
-                      title={`${day(sessions[i].startsAt, lang)}: ${t.status[KIND[code] as "present"] ?? "—"}`}>
-                      <Mark code={code} />
+                    <td key={i} className={i === latest ? "reg-cell reg-latest" : "reg-cell"}>
+                      <StatusDot status={KIND[code] ?? null} title={`${day(sessions[i].startsAt, lang)}: ${KIND[code] ? t.status[KIND[code]!] : "—"}`} />
                     </td>
                   ))}
-                  <td className="reg-fig num">{s.absent}</td>
-                  <td className="reg-fig num muted">{s.late}</td>
-                  <td className="reg-track"><AllowanceTrack used={s.absent} allowed={s.allowed} compact /></td>
+                  <td className="reg-sum"><AbsenceBar used={s.absent} allowed={s.allowed} /></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
-      <p className="muted small reg-note">{t.course.registerNote}</p>
     </section>
   );
 }

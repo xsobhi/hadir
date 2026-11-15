@@ -3,7 +3,7 @@ export type Status = "present" | "late" | "absent" | "excused";
 
 export type User = {
   id: number; name: string; email: string; title: string; department: string;
-  isDemo: boolean; expiresAt: string | null;
+  isDemo: boolean; expiresAt: string | null; gender?: string;
 };
 
 export type Course = {
@@ -25,14 +25,14 @@ export type CourseSummary = {
 export type Next = { startsAt: string; isToday: boolean } | null;
 
 export type StudentRow = {
-  id: number; number: string; nameAr: string; nameEn: string; major: string; year: number;
+  id: number; number: string; nameAr: string; nameEn: string; major: string; year: number; gender?: string;
   present: number; late: number; absent: number; excused: number; allowed: number; level: Level;
 };
 
 export type CourseItem = Course & { summary: CourseSummary; next: Next; openSessionId: number | null };
 
 export type Overview = {
-  today: string; termWeek: number | null; termWeeks: number | null; courses: CourseItem[];
+  today: string; studentCount: number; termWeek: number | null; termWeeks: number | null; courses: CourseItem[];
   next: CourseItem | null; todayClasses: CourseItem[];
   atRisk: (StudentRow & { courseId: number; courseCode: string; courseNameAr: string; courseNameEn: string })[];
   weekly: { week: number; attended: number; marked: number; rate: number | null }[];
@@ -44,7 +44,7 @@ export type CourseDetail = {
 };
 
 export type RosterEntry = {
-  id: number; number: string; nameAr: string; nameEn: string; status: Status | null;
+  id: number; number: string; nameAr: string; nameEn: string; gender?: string; status: Status | null;
   markedAt: string | null; method: string | null; note: string | null;
 };
 
@@ -55,5 +55,5 @@ export type LiveState = {
 
 export type ScanResult = {
   result: "ok" | "duplicate" | "not_enrolled" | "unknown"; code?: string; status?: Status; markedAt?: string;
-  student?: { id: number; number: string; nameAr: string; nameEn: string }; state: LiveState;
+  student?: { id: number; number: string; nameAr: string; nameEn: string; gender?: string }; state: LiveState;
 };

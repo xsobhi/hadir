@@ -14,10 +14,10 @@ export default function Cards() {
   const students = data ? [...data.students].sort((a, b) => a.nameEn.localeCompare(b.nameEn)) : [];
   return (
     <Shell title={t.cards.title}>
-      <div className="title-row no-print">
+      <div className="page-head no-print">
         <div>
           <h1>{t.cards.title}</h1>
-          <p className="muted">{data ? <>{pick(data.course.nameAr, data.course.nameEn)} · <span className="ltr">{data.course.code}</span> · {t.cards.lead}</> : " "}</p>
+          <p className="lead">{data ? <>{pick(data.course.nameAr, data.course.nameEn)} · <span className="ltr">{data.course.code}</span> · {t.cards.lead}</> : " "}</p>
         </div>
         <div className="actions"><button type="button" className="btn btn-primary" onClick={() => window.print()}><Printer aria-hidden="true" />{t.cards.print}</button></div>
       </div>

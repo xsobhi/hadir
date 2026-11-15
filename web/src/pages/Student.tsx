@@ -1,23 +1,24 @@
+import { BookOpen, IdBadge, MailAlert } from "kubai-icons-react";
+import { GraduationCap, Hash } from "lucide-react";
 import { useParams } from "react-router-dom";
 import type { Level, Status } from "../api/types";
 import { useData } from "../api/useData";
-import { AllowanceTrack } from "../components/AllowanceTrack";
-import { Mark } from "../components/course/Register";
+import { Avatar } from "../components/Avatar";
 import { IdCardView } from "../components/IdCardView";
-import { LevelPill } from "../components/LevelPill";
 import { Shell } from "../components/Shell";
 import { LoadError, Skeleton } from "../components/States";
+import { AbsenceBar, LevelChip, StatusDot } from "../components/ui/Status";
+import { Tile } from "../components/ui/Tile";
 import { useLang } from "../i18n";
 import { day, shortDay, time } from "../i18n/format";
 
 type History = { sessionId: number; startsAt: string; topic: string; status: Status | null; markedAt: string | null; note: string };
 type StudentRecord = {
-  student: { id: number; number: string; nameAr: string; nameEn: string; major: string; year: number };
+  student: { id: number; number: string; nameAr: string; nameEn: string; major: string; year: number; gender?: string };
   courses: { courseId: number; code: string; nameAr: string; nameEn: string; allowed: number; absent: number; late: number;
     excused: number; present: number; level: Level; history: History[] }[];
   notices: { id: number; level: Level; body: string; createdAt: string; code: string }[];
 };
-const LETTER: Record<Status, string> = { present: "P", late: "L", absent: "A", excused: "E" };
 
 export default function Student() {
   const { id } = useParams();
@@ -27,65 +28,73 @@ export default function Student() {
   const name = s ? pick(s.nameAr, s.nameEn) : t.student;
   return (
     <Shell title={name}>
-      <div className="title-row">
-        <div>
-          <h1>{name}</h1>
-          <p className="muted">{s ? <><span className="ltr num">{s.number}</span> · {s.major} · {t.record.year(s.year)}</> : " "}</p>
-        </div>
-      </div>
       {error ? <LoadError onRetry={reload} /> : null}
       {!data || !s ? <Skeleton rows={6} /> : (
-        <div className="grid-12">
-          <div className="col-8 stack">
-            {data.courses.map((c) => {
-              const left = c.allowed - c.absent;
-              return (
-                <section key={c.courseId} className="panel" aria-labelledby={`c-${c.courseId}`}>
-                  <div className="panel-head">
-                    <h2 id={`c-${c.courseId}`}>{pick(c.nameAr, c.nameEn)} <span className="muted ltr">{c.code}</span></h2>
-                    <LevelPill level={c.level} />
-                  </div>
-                  <div className="student-course-line">
-                    <AllowanceTrack used={c.absent} allowed={c.allowed} />
-                    <span className={left < 0 ? "track-over" : "muted"}>{left < 0 ? t.record.over(-left) : t.record.remaining(left)}</span>
-                    <span className="muted num">{t.status.late} {c.late} · {t.status.excused} {c.excused}</span>
-                  </div>
-                  <h3 className="sub-h">{t.record.history}</h3>
-                  <ol className="history">
-                    {c.history.map((h) => (
-                      <li key={h.sessionId} title={`${day(h.startsAt, lang, true)} · ${h.topic}`}
-                        className={h.status === "absent" || h.status === "excused" ? "history-item history-flag" : "history-item"}>
-                        <Mark code={h.status ? LETTER[h.status] : "-"} />
-                        <span className="num">{shortDay(h.startsAt)}</span>
-                        {h.status === "late" && h.markedAt && <span className="num muted small">{time(h.markedAt)}</span>}
-                        {h.note && <span className="muted small">{h.note}</span>}
+        <>
+          <section className="profile card">
+            <Avatar seed={s.number} gender={s.gender} size={96} className="profile-avatar" />
+            <div className="profile-text">
+              <h1>{name}</h1>
+              <div className="meta-row">
+                <span className="meta"><Hash aria-hidden="true" /><span className="num" dir="ltr">{s.number}</span></span>
+                <span className="meta"><GraduationCap aria-hidden="true" />{s.major} · {t.record.year(s.year)}</span>
+              </div>
+            </div>
+          </section>
+          <div className="grid cols-main">
+            <div className="stack">
+              {data.courses.map((c) => {
+                const left = c.allowed - c.absent;
+                return (
+                  <section key={c.courseId} className="card" aria-labelledby={`c-${c.courseId}`}>
+                    <div className="card-head">
+                      <div className="card-title" data-kubai-trigger><Tile icon={BookOpen} tone="blue" size={42} /><div><h2 id={`c-${c.courseId}`}>{pick(c.nameAr, c.nameEn)}</h2><p>{c.code}</p></div></div>
+                      <LevelChip level={c.level} />
+                    </div>
+                    <div className="course-line">
+                      <AbsenceBar used={c.absent} allowed={c.allowed} />
+                      <span className={left < 0 ? "chip chip-absent" : "chip chip-waiting"}>{left < 0 ? t.record.over(-left) : t.record.remaining(left)}</span>
+                    </div>
+                    <div className="mini-stats">
+                      {(["present", "late", "absent", "excused"] as Status[]).map((k) => (
+                        <span key={k} className="mini"><StatusDot status={k} />{t.status[k]}<strong className="num">{c[k]}</strong></span>
+                      ))}
+                    </div>
+                    <h3 className="sub-h">{t.record.history}</h3>
+                    <ol className="history">
+                      {c.history.map((h) => (
+                        <li key={h.sessionId} title={`${day(h.startsAt, lang, true)} · ${h.topic}${h.note ? ` · ${h.note}` : ""}`} className="history-item">
+                          <StatusDot status={h.status} />
+                          <span className="num" dir="ltr">{shortDay(h.startsAt)}</span>
+                          {h.status === "late" && h.markedAt && <span className="num muted">{time(h.markedAt)}</span>}
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                );
+              })}
+            </div>
+            <div className="stack">
+              <section className="card" aria-labelledby="card-h">
+                <div className="card-head"><div className="card-title" data-kubai-trigger><Tile icon={IdBadge} tone="violet" size={42} /><h2 id="card-h">{t.record.card}</h2></div></div>
+                <IdCardView student={s} />
+              </section>
+              <section className="card" aria-labelledby="notices-h">
+                <div className="card-head"><div className="card-title" data-kubai-trigger><Tile icon={MailAlert} tone="amber" size={42} /><h2 id="notices-h">{t.record.notices}</h2></div></div>
+                {data.notices.length === 0 ? <p className="empty">{t.record.noNotices}</p> : (
+                  <ul className="rows">
+                    {data.notices.map((n) => (
+                      <li key={n.id} className="notice-item">
+                        <p className="muted small"><span className="chip chip-code">{n.code}</span> {day(n.createdAt, lang)}</p>
+                        <p className="notice-body" dir="auto">{n.body}</p>
                       </li>
                     ))}
-                  </ol>
-                </section>
-              );
-            })}
+                  </ul>
+                )}
+              </section>
+            </div>
           </div>
-          <div className="col-4 stack">
-            <section className="panel" aria-labelledby="card-h">
-              <h2 id="card-h">{t.record.card}</h2>
-              <IdCardView student={s} />
-            </section>
-            <section className="panel" aria-labelledby="notices-h">
-              <h2 id="notices-h">{t.record.notices}</h2>
-              {data.notices.length === 0 ? <p className="empty-line">{t.record.noNotices}</p> : (
-                <ul className="rows">
-                  {data.notices.map((n) => (
-                    <li key={n.id} className="notice-item">
-                      <p className="muted small"><span className="ltr">{n.code}</span> · {day(n.createdAt, lang)}</p>
-                      <p className="notice-body" dir="auto">{n.body}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-          </div>
-        </div>
+        </>
       )}
     </Shell>
   );
