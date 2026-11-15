@@ -1,0 +1,20 @@
+<service>
+  <id>Hadir</id>
+  <name>Hadir (hadir.xsobhi.com)</name>
+  <description>Hadir attendance app: FastAPI + LangGraph on 127.0.0.1:3070, served by Caddy at hadir.xsobhi.com.</description>
+  <executable>C:\hadir\.venv\Scripts\python.exe</executable>
+  <arguments>-m uvicorn hadir.main:app --host 127.0.0.1 --port 3070 --app-dir C:\hadir\app\backend --no-access-log</arguments>
+  <workingdirectory>C:\hadir\app\backend</workingdirectory>
+  <env name="HADIR_ENV_FILE" value="C:\hadir\hadir.env"/>
+  <env name="HADIR_DATA_DIR" value="C:\hadir\data"/>
+  <env name="HADIR_WEB_DIST" value="C:\hadir\app\web\dist"/>
+  <env name="PYTHONUTF8" value="1"/>
+  <log mode="roll-by-size">
+    <sizeThreshold>10240</sizeThreshold>
+    <keepFiles>5</keepFiles>
+  </log>
+  <onfailure action="restart" delay="10 sec"/>
+  <startmode>Automatic</startmode>
+  <priority>BelowNormal</priority>
+  <stoptimeout>15 sec</stoptimeout>
+</service>

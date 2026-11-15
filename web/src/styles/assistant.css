@@ -1,0 +1,76 @@
+/* The assistant: conversations on the side, the chat with its step trace and approval cards. */
+.chat-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: var(--gap); align-items: start; }
+.threads { position: sticky; top: 24px; max-height: calc(100vh - 140px); overflow-y: auto; }
+.thread-list { display: grid; gap: 2px; margin: 0 -8px; }
+.thread {
+  display: block; padding: 7px 8px; border-radius: var(--radius-control); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; color: #3a3a38; transition: background-color 140ms ease;
+}
+.thread:hover { background: var(--raised); }
+.thread.active { background: var(--active); color: var(--text); font-weight: 500; }
+.chat { display: flex; flex-direction: column; padding: 0; min-height: calc(100vh - 180px); }
+.chat-scroll { flex: 1; padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 14px; }
+.chat-empty { max-width: 620px; display: grid; gap: 10px; padding: 12px 0; }
+.chat-empty h2 { font-size: 20px; }
+.examples { display: grid; gap: 8px; margin-top: 8px; }
+.example {
+  width: 100%; text-align: start; padding: 10px 14px; border: 1px solid var(--border); background: var(--surface);
+  border-radius: var(--radius-card); transition: border-color 140ms ease, transform 160ms var(--ease-out);
+}
+.example:hover { border-color: var(--control); }
+.example:active { transform: scale(0.99); }
+.bubble-user {
+  align-self: flex-end; max-width: 75%; background: var(--active); padding: 10px 14px; border-radius: 12px;
+  white-space: pre-wrap;
+}
+.answer { max-width: 760px; }
+.md { display: grid; gap: 8px; line-height: 1.7; }
+.md-ul, .md-ol { display: grid; gap: 4px; padding-inline-start: 20px; }
+.md-ul { list-style: disc; } .md-ol { list-style: decimal; }
+.md-quote { border-inline-start: 2px solid var(--control); padding-inline-start: 12px; color: #2b2b2a; }
+.md-h { font-weight: 600; }
+.md-hr { border: 0; border-top: 1px solid var(--border); margin: 4px 0; width: 100%; }
+
+.steps { display: grid; gap: 6px; padding: 10px 14px; background: var(--raised); border-radius: var(--radius-card); max-width: 760px; }
+.step { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; align-items: start; font-size: 13px; }
+.step-icon svg { width: 16px; height: 16px; stroke-width: 1.75; margin-top: 2px; color: var(--muted); }
+.step-text { display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
+.step-args { font-size: 12px; }
+.step-tool { font-size: 11.5px; color: var(--faint); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.reflection { grid-column: 2; display: grid; gap: 2px; padding-inline-start: 12px; border-inline-start: 1px solid var(--control); color: #3a3a38; }
+.spin { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.letter-card { max-width: 760px; border: 1px solid var(--border); border-radius: var(--radius-card); padding: 16px 18px; background: var(--surface); }
+.letter-card figcaption { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.letter { white-space: pre-wrap; line-height: 1.75; font-size: 14px; }
+.approval-action .letter { background: var(--raised); border-radius: var(--radius-control); padding: 12px 14px; margin-top: 10px; max-height: 200px; overflow-y: auto; }
+.chat-end { scroll-margin-bottom: 110px; }
+
+.approval {
+  max-width: 760px; border: 1px solid var(--text); border-radius: var(--radius-card); padding: 16px 18px;
+  display: grid; gap: 10px; background: var(--surface); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+.approval-done { border-color: var(--border); box-shadow: none; padding: 10px 14px; gap: 4px; }
+.approval-name { font-weight: 600; }
+.approval-args { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 4px 0 0; }
+.approval-args div { display: flex; gap: 6px; }
+.approval-args dt { color: var(--muted); }
+.approval-args dd { margin: 0; font-weight: 500; }
+.approval-verdict { font-weight: 500; }
+.thinking { display: flex; align-items: center; gap: 8px; }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--data); animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.3; transform: scale(0.8); } }
+.chat-error { color: var(--negative); }
+
+.composer { display: flex; gap: 10px; align-items: flex-end; padding: 14px 20px; border-top: 1px solid var(--border); position: sticky; bottom: 0; background: var(--surface); border-radius: 0 0 var(--radius-card) var(--radius-card); }
+.composer textarea { min-height: 44px; max-height: 180px; }
+.send { height: 44px; width: 44px; flex: none; }
+
+@media (max-width: 1000px) {
+  .chat-layout { grid-template-columns: minmax(0, 1fr); }
+  .threads { display: none; }
+  .chat-scroll { padding: 16px 14px 8px; }
+  .composer { padding: 10px 12px; }
+  .bubble-user { max-width: 88%; }
+}

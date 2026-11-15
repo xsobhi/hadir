@@ -10,7 +10,8 @@ ROOT_DIR = BACKEND_DIR.parent
 
 
 def _load_dotenv() -> None:
-    env_file = BACKEND_DIR / ".env"
+    # On the server the file lives outside the release folder, so a deploy never overwrites it.
+    env_file = Path(os.environ.get("HADIR_ENV_FILE", BACKEND_DIR / ".env"))
     if not env_file.exists():
         return
     for line in env_file.read_text(encoding="utf-8").splitlines():
