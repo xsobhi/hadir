@@ -27,6 +27,7 @@ export const app = {
   loadFailed: "Couldn't load this. Check the connection and retry.",
   save: "Save",
   saved: "Saved",
+  deleteFailed: "Could not delete this record. Check the connection and try again.",
   cancel: "Cancel",
   remove: "Remove",
   back: "Back",

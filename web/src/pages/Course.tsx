@@ -6,6 +6,7 @@ import type { CourseDetail } from "../api/types";
 import { useData } from "../api/useData";
 import { CourseForm } from "../components/course/CourseForm";
 import { CourseHeader } from "../components/course/CourseHeader";
+import { DeleteCourseButton } from "../components/course/DeleteCourseButton";
 import { Register } from "../components/course/Register";
 import { RosterTab } from "../components/course/RosterTab";
 import { SessionBars } from "../components/course/SessionBars";
@@ -29,11 +30,6 @@ export default function Course() {
   const start = async () => {
     const sid = data?.openSessionId ?? (await api.post<{ id: number }>(`/api/courses/${id}/sessions`, {})).id;
     navigate(`/app/live/${sid}`);
-  };
-  const remove = async () => {
-    if (!data || !window.confirm(t.course.deleteConfirm(data.course.code))) return;
-    await api.del(`/api/courses/${id}`);
-    window.location.assign("/app");
   };
   const c = data?.course;
   const s = data?.summary;
@@ -59,12 +55,15 @@ export default function Course() {
         <div className="grid cols-main">
           <section data-reveal className="card" aria-labelledby="set-h">
             <div className="card-head"><h2 id="set-h">{t.course.settingsTitle}</h2></div>
-            <CourseForm initial={c} submitLabel={t.save} onSubmit={async (v) => { await api.patch(`/api/courses/${c.id}`, v); await reload(); }} />
+            <CourseForm key={c.id} initial={c} submitLabel={t.save} onSubmit={async (v) => {
+              await api.patch(`/api/courses/${c.id}`, v); await reload();
+              window.dispatchEvent(new Event("hadir:courses-changed"));
+            }} />
           </section>
           <section data-reveal className="card danger-zone">
             <h2>{t.course.deleteCourse}</h2>
             <p className="muted">{t.course.deleteConfirm(c.code)}</p>
-            <button type="button" className="btn btn-danger" onClick={() => void remove()}>{t.course.deleteCourse}</button>
+            <DeleteCourseButton course={c} />
           </section>
         </div>
       ) : (

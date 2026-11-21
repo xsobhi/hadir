@@ -2,9 +2,10 @@
 from __future__ import annotations
 
 import re
+import sqlite3
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from ..auth import current_user
 from ..db import now, tx
@@ -17,6 +18,7 @@ TIME = re.compile(r"^([01]\d|2[0-3]):[0-5]\d$")
 
 
 class CourseIn(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     code: str = Field(min_length=2, max_length=16)
     nameAr: str = Field(min_length=2, max_length=120)
     nameEn: str = Field(default="", max_length=120)
@@ -34,6 +36,15 @@ def _validate(body: CourseIn) -> str:
     if not TIME.match(body.startTime) or any(d < 0 or d > 6 for d in body.days):
         raise HTTPException(422, "bad_schedule")
     return ",".join(str(d) for d in sorted(set(body.days)))
+
+
+def _unique_write(db, query: str, values: tuple):
+    try:
+        return db.execute(query, values)
+    except sqlite3.IntegrityError as exc:
+        if "UNIQUE constraint failed: courses.owner_id, courses.code, courses.section" in str(exc):
+            raise HTTPException(409, "course_exists") from exc
+        raise
 
 
 @router.get("")
@@ -54,7 +65,7 @@ def create_course(body: CourseIn, user: dict = Depends(current_user)):
     with tx() as db:
         if db.execute("SELECT COUNT(*) AS n FROM courses WHERE owner_id = ?", (user["id"],)).fetchone()["n"] >= 30:
             raise HTTPException(409, "too_many_courses")
-        course_id = db.execute(
+        course_id = _unique_write(db,
             "INSERT INTO courses (owner_id, code, name_ar, name_en, section, room, days, start_time, duration_min,"
             " term_start, term_weeks, absence_limit_pct, late_after_min) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (user["id"], body.code.strip().upper(), body.nameAr.strip(), body.nameEn.strip() or body.nameAr.strip(),
@@ -69,7 +80,7 @@ def update_course(course_id: int, body: CourseIn, user: dict = Depends(current_u
     days = _validate(body)
     with tx() as db:
         own_course(db, user["id"], course_id)
-        db.execute(
+        _unique_write(db,
             "UPDATE courses SET code=?, name_ar=?, name_en=?, section=?, room=?, days=?, start_time=?, duration_min=?,"
             " term_weeks=?, absence_limit_pct=?, late_after_min=? WHERE id = ?",
             (body.code.strip().upper(), body.nameAr.strip(), body.nameEn.strip() or body.nameAr.strip(),

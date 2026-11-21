@@ -12,25 +12,13 @@ from ..auth import current_user
 from ..db import tx
 from ..stats import session_rates, student_summaries
 from .common import own_course, own_student
+from .student_input import StudentIn, clean_number as _clean_number
 
 router = APIRouter(prefix="/api/courses/{course_id}/students")
 
 
-class StudentIn(BaseModel):
-    number: str = Field(min_length=3, max_length=32)
-    nameAr: str = Field(min_length=2, max_length=80)
-    nameEn: str = Field(default="", max_length=80)
-    major: str = Field(default="", max_length=80)
-    year: int = Field(default=1, ge=1, le=7)
-    gender: str = Field(default="", pattern="^(m|f|)$")
-
-
 class Paste(BaseModel):
     text: str = Field(max_length=200_000)
-
-
-def _clean_number(raw: str) -> str:
-    return "".join(ch for ch in raw if ch.isalnum())[:32]
 
 
 def _enroll(db, owner_id: int, course_id: int, s: StudentIn) -> tuple[int, bool, bool]:

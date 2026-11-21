@@ -5,9 +5,6 @@
   html.js:not(.js-late) .word-reveal .wr-word { opacity: 0; }
 }
 .wr-word { display: inline-block; will-change: transform, filter; }
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 
 /* Bars grow from their start edge on first paint (CSS only, so it plays even before hydration). */
 .absence-track span { transform-origin: right center; animation: bar-grow 900ms var(--ease-out) both; }

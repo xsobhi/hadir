@@ -1,14 +1,42 @@
 """Students across all courses: the searchable list and one student's record."""
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends
+import sqlite3
+
+from fastapi import APIRouter, Depends, HTTPException
 
 from ..auth import current_user
 from ..db import tx
 from ..stats import allowed_absences, level, student_summaries
 from .common import own_student, student_public
+from .student_input import StudentIn
 
 router = APIRouter(prefix="/api")
+
+
+@router.patch("/students/{student_id}")
+def update_student(student_id: int, body: StudentIn, user: dict = Depends(current_user)):
+    with tx() as db:
+        own_student(db, user["id"], student_id)
+        try:
+            db.execute(
+                "UPDATE students SET number=?, name_ar=?, name_en=?, major=?, year=?, gender=? WHERE id=?",
+                (body.number, body.nameAr, body.nameEn or body.nameAr, body.major, body.year, body.gender, student_id),
+            )
+        except sqlite3.IntegrityError as exc:
+            if "UNIQUE constraint failed: students.owner_id, students.number" in str(exc):
+                raise HTTPException(409, "student_number_exists") from exc
+            raise
+    return {"ok": True}
+
+
+@router.delete("/students/{student_id}")
+def delete_student(student_id: int, user: dict = Depends(current_user)):
+    with tx() as db:
+        own_student(db, user["id"], student_id)
+        # Foreign keys remove this student's enrollments, marks and saved notices in the same transaction.
+        db.execute("DELETE FROM students WHERE id=?", (student_id,))
+    return {"ok": True}
 
 
 @router.get("/students")

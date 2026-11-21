@@ -5,7 +5,7 @@ a student's ID card and the student is marked present or late. This note applies
 *Foundations of User Experience (UX) Design* (earned 2026-11-12,
 [verify](https://coursera.org/verify/5NQIP1WW19KH)) to the project.
 
-**Status, stated plainly:** the MVP was built on 2026-11-15. No professor has used it yet. The personas
+**Status, stated plainly:** the MVP was built on 2026-11-15. No completed professor usability study is documented. The personas
 and journey map below are archetypes and assumptions, and the usability study at the end is a plan.
 No research findings are reported here.
 
@@ -75,8 +75,8 @@ Khaled through the CSV export.
 2. **Two ways to scan.** The phone or laptop camera, or a USB barcode scanner that types the number and
    presses Enter. Repeat scans and cards of students not enrolled in the course are rejected with
    feedback.
-3. **One blue for the main data.** The interface is ink on a paper-grey ground. Blue `#1d5fbf` is kept for
-   the current class and today's numbers, so the eye goes there first.
+3. **A consistent visual language.** Tajawal typography, teal `#0e8a6a` primary actions and status colors
+   with labels support an Arabic-first interface.
 4. **Feedback you can hear and read.** Every scan answers with a sound, a colour and a line of text naming
    the student and the result.
 5. **A register like the paper sheet.** Students by classes, one mark per cell, as on the roll-call sheet
@@ -90,9 +90,8 @@ Khaled through the CSV export.
 - Scan results never rely on colour alone: each comes with a sound and a line of text.
 - Large tap targets, so attendance can be taken on a phone while standing.
 - A full right-to-left layout in Arabic and left-to-right in English, switched in one place.
-- IBM Plex Sans Arabic, which reads well in both Arabic and Latin script.
-- The data blue has about 6.1:1 contrast on white (about 5.5:1 on the page ground), above the 4.5:1
-  WCAG AA level for text.
+- Tajawal typography supports Arabic and Latin text.
+- Native scrolling preserves familiar browser behavior. A full contrast and screen-reader audit is still planned.
 - A USB scanner works like a keyboard, so the camera and touch screen are optional.
 - Arabic is the default language. Sample names, courses and excuse notes exist in Arabic, and the
   assistant writes warning notices in formal Arabic when the interface is in Arabic.
@@ -134,3 +133,8 @@ staff. None have been recruited yet.
 
 **What happens with the results.** Fixes from the study are planned for 2027-01-31, before a one-course
 pilot starting 2027-02-15 (see `project-charter.md`).
+
+## Full website update, 2026-11-21
+
+See [the complete website case study](website-case-study.md) for all 14 screens, profile editing,
+record management, architecture, feedback, validation and remaining limits.

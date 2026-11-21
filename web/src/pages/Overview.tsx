@@ -1,4 +1,5 @@
 import { CalendarCheck, ChartBar, TriangleAlert, Users } from "kubai-icons-react";
+import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Overview as Data } from "../api/types";
 import { useData } from "../api/useData";
@@ -36,6 +37,7 @@ export default function Overview() {
           <h1>{user ? t.overview.greeting(user.name) : t.overview.title}</h1>
           <p className="lead">{subline || " "}</p>
         </div>
+        <Link className="btn btn-primary" to="/app/courses/new"><Plus aria-hidden="true" />{t.overview.addCourse}</Link>
       </div>
       {error ? <LoadError onRetry={reload} /> : null}
       {data && data.courses.length === 0 ? <EmptyWorkspace /> : <>

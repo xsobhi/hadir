@@ -1,6 +1,19 @@
 import type { people as en } from "../en/people";
 
 export const people: typeof en = {
+  manageStudent: {
+    edit: "تعديل الطالب",
+    delete: "حذف الطالب",
+    editHint: "تُطبَّق التغييرات على الطالب في جميع مساقاتك مع الاحتفاظ بسجل حضوره.",
+    duplicate: "هذا الرقم مسجّل لطالب آخر. اختر رقمًا مختلفًا.",
+    failed: "تعذّر حفظ بيانات الطالب. تحقّق من الحقول وحاول مرة أخرى.",
+    defaultPicture: "افتراضية",
+    actions: "الإجراءات",
+    unenroll: "إزالة من المساق",
+    unenrolled: "غير مسجّل في مساق",
+    deleted: "تم حذف الطالب.",
+    deleteConfirm: (name: string) => `حذف ${name} من مساحة عملك؟ سيُحذف تسجيله وحضوره وإنذاراته المحفوظة في جميع المساقات نهائيًا. لا يمكن التراجع عن ذلك.`,
+  },
   students: {
     title: "الطلاب",
     count: (n: number) => `${n} طالبًا في مساقاتك`,

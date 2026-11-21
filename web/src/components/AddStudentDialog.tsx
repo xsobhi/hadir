@@ -51,7 +51,7 @@ export function AddStudentDialog({ open, onClose, courses, courseId, majors, onA
     }
   };
   return (
-    <dialog ref={dialog} className="dialog" onClose={onClose} onCancel={onClose} aria-labelledby="add-title" data-lenis-prevent>
+    <dialog ref={dialog} className="dialog" onClose={onClose} onCancel={onClose} aria-labelledby="add-title">
       <form className="dialog-body form-grid" onSubmit={submit} noValidate>
         <div className="dialog-head span-2">
           <img src={avatarUrl(v.number || "new", v.gender)} alt="" width={56} height={56} className="avatar" />

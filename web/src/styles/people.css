@@ -67,3 +67,16 @@
   .table td:nth-child(7) { grid-row: 1; grid-column: 2; }
   .search { max-width: none; }
 }
+
+.student-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.profile > .student-actions { margin-inline-start: auto; }
+.avatar { object-fit: cover; }
+@media (max-width: 760px) {
+  .student-row-actions { grid-column: 1 / -1; }
+  .profile > .student-actions { margin-inline-start: 0; }
+  .roster-list-row > .student-actions { grid-column: 1 / -1; }
+}
+
+.crop-dialog[open] { animation: none; }
+.crop-stage { position: relative; width: 100%; height: min(340px, 45vh); background: #17202a; border-radius: 16px; overflow: hidden; }
+.crop-dialog input[type="range"] { width: 100%; accent-color: var(--brand); }

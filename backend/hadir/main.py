@@ -8,14 +8,14 @@ from urllib.parse import urlparse
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse, Response
 
-from .api import assistant, auth_routes, courses, live, overview, pabbel_auth, roster, students
+from .api import assistant, auth_routes, courses, live, overview, pabbel_auth, profile, roster, students
 from .config import PUBLIC_ORIGIN, WEB_DIST
 from .db import init_db, now_iso, tx
 from .ratelimit import prune
 
 init_db()
 app = FastAPI(title="Hadir", docs_url=None, redoc_url=None, openapi_url=None)
-for module in (auth_routes, pabbel_auth, overview, courses, roster, live, students, assistant):
+for module in (auth_routes, pabbel_auth, profile, overview, courses, roster, live, students, assistant):
     app.include_router(module.router)
 
 ALLOWED_HOSTS = {urlparse(PUBLIC_ORIGIN).netloc, "localhost:8731", "127.0.0.1:8731", "localhost:8732", "127.0.0.1:8732"}

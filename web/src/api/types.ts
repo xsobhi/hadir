@@ -3,7 +3,7 @@ export type Status = "present" | "late" | "absent" | "excused";
 
 export type User = {
   id: number; name: string; email: string; title: string; department: string;
-  isDemo: boolean; expiresAt: string | null; gender?: string;
+  isDemo: boolean; expiresAt: string | null; gender?: string; avatarUrl?: string | null;
 };
 
 export type Course = {

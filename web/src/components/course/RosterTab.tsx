@@ -7,6 +7,7 @@ import { useLang } from "../../i18n";
 import { AddStudentDialog } from "../AddStudentDialog";
 import { Person } from "../Person";
 import { useToast } from "../ui/Toast";
+import { StudentActions } from "../students/StudentActions";
 
 /** Who takes the course: add one student (dialog), paste a list from a spreadsheet, or remove someone.
  * A student just added is shown first and highlighted, so the professor sees it worked. */
@@ -19,7 +20,7 @@ export function RosterTab({ detail, onChange }: { detail: CourseDetail; onChange
   const [paste, setPaste] = useState("");
   useEffect(() => {
     if (fresh === null) return;
-    document.getElementById(`roster-${fresh}`)?.scrollIntoView({ block: "center", behavior: "smooth" });
+    document.getElementById(`roster-${fresh}`)?.scrollIntoView({ block: "center", behavior: "auto" });
   }, [fresh, detail]);
   const addMany = async (e: FormEvent) => {
     e.preventDefault();
@@ -48,7 +49,8 @@ export function RosterTab({ detail, onChange }: { detail: CourseDetail; onChange
             <li key={s.id} id={`roster-${s.id}`} className={s.id === fresh ? "row roster-list-row row-new" : "row roster-list-row"}>
               <Link to={`/app/students/${s.id}`}><Person nameAr={s.nameAr} nameEn={s.nameEn} number={s.number} gender={s.gender} /></Link>
               <span className="muted small">{s.major}</span>
-              <button type="button" className="btn btn-ghost" onClick={() => void remove(s.id, pick(s.nameAr, s.nameEn))}>{t.remove}</button>
+              <div className="student-actions"><StudentActions student={s} compact onChange={onChange} />
+                <button type="button" className="btn btn-ghost" onClick={() => void remove(s.id, pick(s.nameAr, s.nameEn))}>{t.manageStudent.unenroll}</button></div>
             </li>
           ))}
         </ul>

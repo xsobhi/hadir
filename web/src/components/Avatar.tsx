@@ -4,6 +4,6 @@ export function avatarUrl(seed: string, gender = ""): string {
 }
 
 /** A default profile picture: the same person always gets the same illustrated face. */
-export function Avatar({ seed, gender, size = 40, className = "" }: { seed: string; gender?: string; size?: number; className?: string }) {
-  return <img src={avatarUrl(seed, gender)} width={size} height={size} alt="" className={`avatar ${className}`} loading="lazy" decoding="async" />;
+export function Avatar({ seed, gender, src, size = 40, className = "" }: { seed: string; gender?: string; src?: string | null; size?: number; className?: string }) {
+  return <img src={src || avatarUrl(seed, gender)} width={size} height={size} alt="" className={`avatar ${className}`} loading="lazy" decoding="async" />;
 }

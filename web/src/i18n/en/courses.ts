@@ -36,6 +36,13 @@ export const courses = {
     heroLate: (m: number) => `late after ${m} min`,
   },
   course: {
+    edit: "Edit course",
+    invalid: "Enter a course code, a name and at least one meeting day.",
+    duplicate: "This code and section already exist. Change the code or section.",
+    tooMany: "You can have up to 30 courses. Delete an unused course before adding another.",
+    failed: "Could not save the course. Check the fields and your connection, then try again.",
+    needDays: "Select at least one meeting day.",
+
     register: "Register",
     roster: "Roster",
     settings: "Settings",

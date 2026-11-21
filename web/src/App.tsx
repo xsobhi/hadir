@@ -8,6 +8,7 @@ import Course from "./pages/Course";
 import Live from "./pages/Live";
 import NewCourse from "./pages/NewCourse";
 import Overview from "./pages/Overview";
+import Settings from "./pages/Settings";
 import SignIn from "./pages/SignIn";
 import Student from "./pages/Student";
 import Students from "./pages/Students";
@@ -29,6 +30,7 @@ export default function App() {
       <Route path="/signin" element={<SignIn mode="in" />} />
       <Route path="/signup" element={<SignIn mode="up" />} />
       <Route path="/about" element={<CaseStudy />} />
+      <Route path="/app/settings" element={<Private><Settings /></Private>} />
       <Route path="/app" element={<Private><Overview /></Private>} />
       <Route path="/app/courses/new" element={<Private><NewCourse /></Private>} />
       <Route path="/app/courses/:id" element={<Private><Course /></Private>} />

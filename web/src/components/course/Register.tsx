@@ -22,7 +22,7 @@ export function Register({ detail }: { detail: CourseDetail }) {
         </ul>
       </div>
       {sessions.length === 0 ? <p className="empty">{t.course.noSessions}</p> : (
-        <div className="register-scroll" data-lenis-prevent tabIndex={0} aria-label={t.course.register}>
+        <div className="register-scroll" tabIndex={0} aria-label={t.course.register}>
           <table className="register">
             <thead>
               <tr>

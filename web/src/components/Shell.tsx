@@ -1,5 +1,5 @@
 import { BookOpen, Bot, CalendarCheck, Languages, Lightbulb, Users } from "kubai-icons-react";
-import { LogOut, Menu, PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen, Sparkles, X } from "lucide-react";
+import { LogOut, Menu, PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen, Plus, Settings, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useReveal } from "../motion/useReveal";
 import { NavLink, useLocation } from "react-router-dom";
@@ -33,7 +33,12 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
     setCollapsed(!collapsed);
   };
   const location = useLocation();
-  const { data } = useData<{ courses: CourseItem[] }>("/api/courses");
+  const { data, reload } = useData<{ courses: CourseItem[] }>("/api/courses");
+  useEffect(() => {
+    const refresh = () => { void reload(); };
+    window.addEventListener("hadir:courses-changed", refresh);
+    return () => window.removeEventListener("hadir:courses-changed", refresh);
+  }, [reload]);
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
@@ -51,6 +56,9 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
       {item("/app/students", t.nav.students, Users, "violet")}
       {item("/app/assistant", t.nav.assistant, Bot, "amber")}
       <p className="nav-group"><BookOpen size={16} color="#64748b" trigger="none" /><span className="nav-label">{t.nav.courses}</span></p>
+      <NavLink to="/app/courses/new" className="nav-item" title={t.overview.addCourse} aria-label={t.overview.addCourse}>
+        <Plus size={22} aria-hidden="true" /><span className="nav-label">{t.overview.addCourse}</span>
+      </NavLink>
       {(data?.courses ?? []).map((c, i) => (
         <NavLink key={c.id} to={`/app/courses/${c.id}`} className="nav-item nav-course" title={pick(c.nameAr, c.nameEn)}
           style={{ ["--course" as string]: COURSE_TONES[i % COURSE_TONES.length] }}>
@@ -65,13 +73,16 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
 
   const foot = (
     <div className="side-foot">
+      <NavLink to="/app/settings" className="nav-item" title={t.settings.heading} aria-label={t.settings.heading}>
+        <Settings size={22} aria-hidden="true" /><span className="nav-label">{t.settings.heading}</span>
+      </NavLink>
       {item("/about", t.nav.caseStudy, Lightbulb, "sky")}
       <button type="button" className="nav-item" onClick={() => setLang(lang === "ar" ? "en" : "ar")} aria-label={t.languageLabel} data-kubai-trigger>
         <Languages size={22} color={TONE_COLOR.blue} trigger="parent" /><span className="nav-label">{t.language}</span>
       </button>
       {user && (
         <div className="user-card">
-          <Avatar seed={user.email} gender={user.gender} size={42} />
+          <NavLink to="/app/settings" aria-label={t.settings.heading}><Avatar seed={user.email} gender={user.gender} src={user.avatarUrl} size={42} /></NavLink>
           <span className="user-text">
             <span className="user-name">{user.name}</span>
             <span className="user-dept">{user.title || user.department}</span>
@@ -103,7 +114,7 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
         <button type="button" className="btn btn-ghost icon-btn" onClick={() => setOpen(true)} aria-label={t.nav.menu} aria-expanded={open}><Menu aria-hidden="true" /></button>
       </header>
       {open && (
-        <div className="sheet" data-lenis-prevent role="dialog" aria-modal="true" aria-label={t.nav.menu}>
+        <div className="sheet" role="dialog" aria-modal="true" aria-label={t.nav.menu}>
           <div className="sheet-head">
             <span className="brand"><Mark size={34} /><strong>{t.product}</strong></span>
             <button type="button" className="btn btn-ghost icon-btn" onClick={() => setOpen(false)} aria-label={t.nav.close}><X aria-hidden="true" /></button>

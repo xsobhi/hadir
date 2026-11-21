@@ -32,17 +32,17 @@ export function PmSection({ cs, l }: { cs: CaseStudy; l: Labels }) {
       <div data-reveal className="cs-columns">
         <div>
           <h3 className="cs-sub">{l.stakeholders}</h3>
-          <table className="cs-table">
+          <div className="cs-table-wrap" tabIndex={0}><table className="cs-table">
             <thead><tr><th>{l.stakeholders}</th><th>{l.interest}</th><th>{l.influence}</th></tr></thead>
             <tbody>{pm.stakeholders.map((s) => <tr key={s.who}><th scope="row">{s.who}</th><td>{s.interest}</td><td>{l.level[s.influence]}</td></tr>)}</tbody>
-          </table>
+          </table></div>
         </div>
         <div>
           <h3 className="cs-sub">{l.raci}</h3>
-          <table className="cs-table">
+          <div className="cs-table-wrap" tabIndex={0}><table className="cs-table">
             <thead><tr><th>{l.task}</th><th>R</th><th>A</th><th>C</th><th>I</th></tr></thead>
             <tbody>{pm.raci.map((r) => <tr key={r.task}><th scope="row">{r.task}</th><td>{r.r}</td><td>{r.a}</td><td>{r.c}</td><td>{r.i}</td></tr>)}</tbody>
-          </table>
+          </table></div>
         </div>
       </div>
       <h3 className="cs-sub">{l.risks}</h3>

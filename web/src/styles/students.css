@@ -1,6 +1,6 @@
 /* Students page filters and pager, the add-student dialog, toasts, and the highlight on a just-added student. */
-.filters { display: grid; gap: 12px; margin-bottom: var(--gap); }
-.filters-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.filters { display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; gap: 12px; margin-bottom: var(--gap); }
+.filters-row { min-width: 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .filters .search { flex: 1; min-width: 240px; max-width: none; }
 .filters .select { min-width: 150px; }
 

@@ -1,6 +1,7 @@
 import { BookOpen, IdBadge, MailAlert } from "kubai-icons-react";
 import { GraduationCap, Hash } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { StudentActions } from "../components/students/StudentActions";
 import type { Level, Status } from "../api/types";
 import { useData } from "../api/useData";
 import { Avatar } from "../components/Avatar";
@@ -23,6 +24,7 @@ type StudentRecord = {
 
 export default function Student() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { t, lang, pick } = useLang();
   const { data, error, reload } = useData<StudentRecord>(`/api/students/${id}`);
   const s = data?.student;
@@ -42,6 +44,7 @@ export default function Student() {
                 <span className="meta"><GraduationCap aria-hidden="true" />{s.major} · {t.record.year(s.year)}</span>
               </div>
             </div>
+            <StudentActions student={s} onChange={reload} onDeleted={() => navigate("/app/students", { replace: true })} />
           </section>
           <div className="grid cols-main">
             <div className="stack">

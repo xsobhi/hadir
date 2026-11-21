@@ -29,6 +29,7 @@ export const app: typeof en = {
   loadFailed: "تعذّر التحميل. تحقّق من الاتصال وأعد المحاولة.",
   save: "حفظ",
   saved: "تم الحفظ",
+  deleteFailed: "تعذّر حذف السجل. تحقّق من الاتصال وحاول مرة أخرى.",
   cancel: "إلغاء",
   remove: "إزالة",
   back: "رجوع",

@@ -4,7 +4,7 @@ Applies the Google course *Foundations of Project Management* (earned 2026-11-09
 [verify](https://coursera.org/verify/C5RZVWCW7JAN)). Owner: Sobhi Ashraf Al-Firani, developer.
 
 **Status on 2026-11-15:** the MVP is built. Everything after that date below is planned, not done. No
-university has agreed to a pilot yet, and no professor has used Hadir.
+university has agreed to a pilot yet, and no completed professor usability study is documented.
 
 ## Background
 
@@ -126,7 +126,7 @@ the CSV export. A wider rollout is a decision for the pilot review, not an assum
 - The one-click demo with nine weeks of sample data makes the product easy to try.
 
 **To improve**
-- No professor has used Hadir yet; the usability study has to come before new features.
+- No completed professor usability study is documented; recruitment and pilot approval remain pending.
 - The personas and journey map are assumptions until the study tests them.
 - The notice critic is itself a model; a code check of numbers and dates would be stronger.
-- There are no automated tests yet for the attendance rules and scan results.
+- Record and profile regression tests are in place; attendance rules and real scanners need broader coverage.

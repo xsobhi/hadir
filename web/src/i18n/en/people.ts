@@ -1,4 +1,17 @@
 export const people = {
+  manageStudent: {
+    edit: "Edit student",
+    delete: "Delete student",
+    editHint: "Changes apply to this student in all your courses. Their attendance history is kept.",
+    duplicate: "Another student already has this number. Choose a different number.",
+    failed: "Could not save the student. Check the fields and try again.",
+    defaultPicture: "Default",
+    actions: "Actions",
+    unenroll: "Remove from course",
+    unenrolled: "Not enrolled",
+    deleted: "Student deleted.",
+    deleteConfirm: (name: string) => `Delete ${name} from your workspace? This permanently removes their enrollments, attendance and saved notices in all courses. This cannot be undone.`,
+  },
   students: {
     title: "Students",
     count: (n: number) => `${n} students across your courses`,

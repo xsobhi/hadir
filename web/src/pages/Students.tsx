@@ -11,12 +11,14 @@ import { PageSkeleton } from "../components/skeletons";
 import { LoadError } from "../components/States";
 import { Pagination } from "../components/students/Pagination";
 import { StudentFilters, type Filters } from "../components/students/StudentFilters";
+import { StudentActions } from "../components/students/StudentActions";
+import type { StudentInfo } from "../components/students/EditStudentDialog";
 import { AbsenceBar, LevelChip } from "../components/ui/Status";
 import { Tile } from "../components/ui/Tile";
 import { useLang } from "../i18n";
 
 type Row = StudentRow & { courseId: number; courseCode: string };
-type Data = { rows: Row[]; courses: { id: number; code: string; nameAr: string; nameEn: string }[] };
+type Data = { rows: Row[]; unenrolled: StudentInfo[]; courses: { id: number; code: string; nameAr: string; nameEn: string }[] };
 const RANK: Record<Level, number> = { over: 0, warning: 1, watch: 2, ok: 3 };
 const KEYS: (keyof Filters)[] = ["q", "course", "level", "major", "year", "sort"];
 
@@ -38,6 +40,9 @@ export default function Students() {
   const [adding, setAdding] = useState(false);
   const [fresh, setFresh] = useState<number | null>(null);
   const { data, error, reload } = useData<Data>("/api/students");
+  const allRows: Row[] = useMemo(() => data ? [...data.rows, ...data.unenrolled.map((s) => ({
+    ...s, courseId: 0, courseCode: "", present: 0, late: 0, absent: 0, excused: 0, allowed: 0, level: "ok" as const,
+  }))] : [], [data]);
   const update = (changes: Record<string, string>) => {
     const next = new URLSearchParams(params);
     Object.entries(changes).forEach(([k, v]) => (v ? next.set(k, v) : next.delete(k)));
@@ -45,24 +50,24 @@ export default function Students() {
   };
   const setFilter = (key: keyof Filters | "clear", value: string) =>
     key === "clear" ? setParams(new URLSearchParams(), { replace: true }) : update({ [key]: value, page: "" });
-  const majors = useMemo(() => [...new Set((data?.rows ?? []).map((r) => r.major).filter(Boolean))].sort(), [data]);
-  const years = useMemo(() => [...new Set((data?.rows ?? []).map((r) => r.year))].sort(), [data]);
+  const majors = useMemo(() => [...new Set(allRows.map((r) => r.major).filter(Boolean))].sort(), [allRows]);
+  const years = useMemo(() => [...new Set(allRows.map((r) => r.year))].sort(), [allRows]);
   const rows = useMemo(() => {
     if (!data) return [];
     const needle = f.q.trim().toLowerCase();
     const sorter = SORTERS[f.sort] ?? SORTERS.risk;
-    return data.rows
+    return allRows
       .filter((r) => !f.course || String(r.courseId) === f.course)
       .filter((r) => !f.level || RANK[r.level] <= RANK[f.level as Level])
       .filter((r) => !f.major || r.major === f.major)
       .filter((r) => !f.year || String(r.year) === f.year)
       .filter((r) => !needle || r.number.includes(needle) || r.nameEn.toLowerCase().includes(needle) || r.nameAr.includes(f.q.trim()))
       .sort((a, b) => (a.id === fresh ? -1 : b.id === fresh ? 1 : 0) || sorter(a, b));
-  }, [data, f.q, f.course, f.level, f.major, f.year, f.sort, fresh]);
+  }, [data, allRows, f.q, f.course, f.level, f.major, f.year, f.sort, fresh]);
   const pages = Math.max(1, Math.ceil(rows.length / size));
   const current = Math.min(page, pages);
   const shown = rows.slice((current - 1) * size, current * size);
-  const people = data ? new Set(data.rows.map((r) => r.id)).size : 0;
+  const people = new Set(allRows.map((r) => r.id)).size;
   if (!data && !error) return <Shell title={t.students.title}><PageSkeleton kind="list" /></Shell>;
   return (
     <Shell title={t.students.title}>
@@ -86,18 +91,20 @@ export default function Students() {
                 <th scope="col" className="num">{t.students.colExcused}</th>
                 <th scope="col">{t.course.allowanceCol}</th>
                 <th scope="col">{t.students.colLevel}</th>
+                <th scope="col">{t.manageStudent.actions}</th>
               </tr>
             </thead>
             <tbody>
               {shown.map((r) => (
                 <tr key={`${r.courseId}-${r.id}`} className={r.id === fresh ? "row-new" : undefined}>
                   <td><Link to={`/app/students/${r.id}`}><Person nameAr={r.nameAr} nameEn={r.nameEn} number={r.number} gender={r.gender} sub={`${r.number}${r.major ? ` · ${r.major}` : ""}`} /></Link></td>
-                  <td><span className="chip chip-code">{r.courseCode}</span></td>
+                  <td><span className="chip chip-code">{r.courseCode || t.manageStudent.unenrolled}</span></td>
                   <td className="num">{r.absent}</td>
                   <td className="num muted">{r.late}</td>
                   <td className="num muted">{r.excused}</td>
-                  <td><AbsenceBar used={r.absent} allowed={r.allowed} /></td>
-                  <td><LevelChip level={r.level} /></td>
+                  <td>{r.courseId ? <AbsenceBar used={r.absent} allowed={r.allowed} /> : <span className="muted">{t.manageStudent.unenrolled}</span>}</td>
+                  <td>{r.courseId ? <LevelChip level={r.level} /> : "—"}</td>
+                  <td className="student-row-actions"><StudentActions student={r} onChange={reload} compact /></td>
                 </tr>
               ))}
             </tbody>

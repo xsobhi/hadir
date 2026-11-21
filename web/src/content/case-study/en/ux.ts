@@ -93,15 +93,15 @@ export const uxEn: CaseStudyUx = {
   decisions: [
     {
       title: "The ID card is the key",
-      body: "The barcode on the existing university card holds the student number, so no new cards or devices are needed.",
+      body: "A compatible card barcode can supply the student number. Printable sample cards demonstrate the flow; real university formats still need checking.",
     },
     {
       title: "Two ways to scan",
       body: "The phone or laptop camera, or a USB barcode scanner that types the number and presses Enter.",
     },
     {
-      title: "One blue for the main data",
-      body: "The interface is ink on paper; blue #1d5fbf is kept for the current class and today's numbers.",
+      title: "A consistent visual language",
+      body: "Tajawal typography, teal #0e8a6a primary actions and labeled status colors create a consistent Arabic-first interface.",
     },
     {
       title: "Feedback you can hear",
@@ -120,8 +120,8 @@ export const uxEn: CaseStudyUx = {
     "Scan results never rely on colour alone: each one comes with a sound and a line of text.",
     "Large tap targets, so attendance can be taken on a phone while standing.",
     "A full right-to-left layout in Arabic and left-to-right in English, from one switch.",
-    "IBM Plex Sans Arabic, which reads well in both Arabic and Latin script.",
-    "The data blue has about 6:1 contrast on white, above the 4.5:1 WCAG AA level for text.",
+    "Tajawal typography supports Arabic and Latin text in the same interface.",
+    "Native scrolling and visible labels support familiar interaction; a full contrast and screen-reader audit remains planned.",
     "A USB scanner works like a keyboard, so the camera and the touch screen are optional.",
   ],
   researchPlan: {

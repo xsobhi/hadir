@@ -60,6 +60,7 @@ def public_user(row: dict) -> dict:
         "id": row["id"], "name": row["name"], "email": row["email"], "title": row["title"],
         "department": row["department"], "isDemo": bool(row["is_demo"]), "expiresAt": row["expires_at"],
         "gender": row.get("gender", ""),
+        "avatarUrl": f"/api/profile/avatar?v={row['avatar_version']}" if row.get("avatar_version") else None,
     }
 
 

@@ -1,7 +1,7 @@
 import type { CaseStudyIntro } from "../types";
 
 export const introEn: CaseStudyIntro = {
-  title: "How Hadir was built",
+  title: "Hadir: the complete website case study",
   lead:
     "Hadir is an Arabic-first attendance system for university classes: the professor scans the barcode on a " +
     "student's ID card and the student is marked present or late. This page shows where four Coursera " +
@@ -18,7 +18,7 @@ export const introEn: CaseStudyIntro = {
       verifyUrl: "https://coursera.org/verify/5NQIP1WW19KH",
       applied: [
         "Three personas and a five-stage journey map for the professor, written before the screens.",
-        "\"How might we\" questions that kept scanning as the main task and set one blue for the main data.",
+        "\"How might we\" questions that kept scanning as the main task and made scan feedback clear.",
         "Accessibility from the start: every scan result is given by sound, colour and text, in Arabic or English.",
         "A usability study plan with goals, questions and KPIs, ready for the first professors.",
       ],

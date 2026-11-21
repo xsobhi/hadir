@@ -5,6 +5,7 @@ type Rule = { pattern: RegExp; access: Access; data: (m: RegExpMatchArray) => st
 
 const shell = "/api/courses";
 const RULES: Rule[] = [
+  { pattern: /^\/app\/settings$/, access: "private", data: () => [shell] },
   { pattern: /^\/$/, access: "guest", data: () => [] },
   { pattern: /^\/sign(in|up)$/, access: "guest", data: () => [] },
   { pattern: /^\/about$/, access: "public", data: () => [] },

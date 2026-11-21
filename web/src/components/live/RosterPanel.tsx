@@ -42,7 +42,7 @@ export function RosterPanel({ state, onMark }: { state: LiveState; onMark: (id: 
         </label>
       </div>
       {rows.length === 0 ? <p className="empty">{t.live.noScans}</p> : (
-        <ul className="rows roster-rows" data-lenis-prevent>
+        <ul className="rows roster-rows">
           {rows.map((p) => (
             <li key={p.id} className="row roster-row">
               <Person nameAr={p.nameAr} nameEn={p.nameEn} number={p.number} gender={p.gender} />

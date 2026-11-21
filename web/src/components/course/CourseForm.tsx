@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { ApiError } from "../../api/client";
 import type { Course } from "../../api/types";
 import { useLang } from "../../i18n";
 
@@ -16,11 +17,19 @@ export function CourseForm({ initial, submitLabel, onSubmit }: {
   const { t } = useLang();
   const [v, setV] = useState<CourseInput>(initial ?? BLANK);
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [error, setError] = useState("");
   const set = <K extends keyof CourseInput>(k: K, value: CourseInput[K]) => { setV((o) => ({ ...o, [k]: value })); setState("idle"); };
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+    if (v.code.trim().length < 2 || v.nameAr.trim().length < 2 || !v.days.length) {
+      setError(t.course.invalid); setState("error"); return;
+    }
     setState("saving");
-    try { await onSubmit(v); setState("saved"); } catch { setState("error"); }
+    try { await onSubmit(v); setState("saved"); } catch (err) {
+      setError(err instanceof ApiError && err.code === "course_exists" ? t.course.duplicate
+        : err instanceof ApiError && err.code === "too_many_courses" ? t.course.tooMany : t.course.failed);
+      setState("error");
+    }
   };
   const num = (k: "durationMin" | "termWeeks" | "absenceLimitPct" | "lateAfterMin", label: string, min: number, max: number) => (
     <div className="field">
@@ -36,9 +45,9 @@ export function CourseForm({ initial, submitLabel, onSubmit }: {
       <div className="field"><label htmlFor="section">{t.course.section}</label>
         <input id="section" className="input" dir="ltr" value={v.section} onChange={(e) => set("section", e.target.value)} maxLength={8} /></div>
       <div className="field span-2"><label htmlFor="nameAr">{t.course.nameAr}</label>
-        <input id="nameAr" className="input" dir="rtl" value={v.nameAr} onChange={(e) => set("nameAr", e.target.value)} required minLength={2} /></div>
+        <input id="nameAr" className="input" dir="rtl" value={v.nameAr} onChange={(e) => set("nameAr", e.target.value)} required minLength={2} maxLength={120} /></div>
       <div className="field span-2"><label htmlFor="nameEn">{t.course.nameEn}</label>
-        <input id="nameEn" className="input" dir="ltr" value={v.nameEn} onChange={(e) => set("nameEn", e.target.value)} /></div>
+        <input id="nameEn" className="input" dir="ltr" value={v.nameEn} onChange={(e) => set("nameEn", e.target.value)} maxLength={120} /></div>
       <fieldset className="field span-2 days">
         <legend>{t.course.days}</legend>
         <div className="day-row">
@@ -51,6 +60,7 @@ export function CourseForm({ initial, submitLabel, onSubmit }: {
           ))}
         </div>
       </fieldset>
+      {!v.days.length && <p className="error-text span-2" role="alert">{t.course.needDays}</p>}
       <div className="field"><label htmlFor="startTime">{t.course.startTime}</label>
         <input id="startTime" className="input num" type="time" dir="ltr" value={v.startTime} onChange={(e) => set("startTime", e.target.value)} required /></div>
       <div className="field"><label htmlFor="room">{t.room}</label>
@@ -61,7 +71,7 @@ export function CourseForm({ initial, submitLabel, onSubmit }: {
       {num("lateAfterMin", t.course.lateAfter, 0, 60)}
       <div className="span-2 form-foot">
         {state === "saved" && <span className="muted">{t.saved}</span>}
-        {state === "error" && <span className="error-text">{t.loadFailed}</span>}
+        {state === "error" && <span className="error-text" role="alert">{error}</span>}
         <button type="submit" className="btn btn-primary" disabled={state === "saving" || v.days.length === 0}>{submitLabel}</button>
       </div>
     </form>

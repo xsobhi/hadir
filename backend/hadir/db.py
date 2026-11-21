@@ -45,7 +45,8 @@ def init_db() -> None:
         conn.executescript(SCHEMA.read_text(encoding="utf-8"))
         # Columns added after the first release: add them to databases created before.
         added = (("students", "gender", "TEXT NOT NULL DEFAULT ''"), ("users", "gender", "TEXT NOT NULL DEFAULT ''"),
-                 ("users", "pabbel_id", "TEXT"))
+                 ("users", "pabbel_id", "TEXT"), ("users", "avatar", "BLOB"),
+                 ("users", "avatar_version", "TEXT NOT NULL DEFAULT ''"))
         for table, column, kind in added:
             names = {r["name"] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()}
             if column not in names:

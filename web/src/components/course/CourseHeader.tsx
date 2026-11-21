@@ -1,5 +1,6 @@
 import { IdBadge, ScanBarcode } from "kubai-icons-react";
-import { CalendarDays, Clock3, DoorOpen, Download, Users } from "lucide-react";
+import { CalendarDays, Clock3, DoorOpen, Download, Pencil, Users } from "lucide-react";
+import { DeleteCourseButton } from "./DeleteCourseButton";
 import { Link } from "react-router-dom";
 import type { CourseDetail } from "../../api/types";
 import { useLang } from "../../i18n";
@@ -21,6 +22,8 @@ export function CourseHeader({ data, onStart }: { data: CourseDetail; onStart: (
         </div>
       </div>
       <div className="actions">
+        <Link className="btn" to={`/app/courses/${c.id}?tab=settings`}><Pencil aria-hidden="true" />{t.course.edit}</Link>
+        <DeleteCourseButton course={c} />
         <a className="btn" href={`/api/courses/${c.id}/students/export.csv`}><Download aria-hidden="true" />{t.course.export}</a>
         <Link className="btn" to={`/app/cards/${c.id}`} data-kubai-trigger><IdBadge size={20} color="#7c3aed" trigger="parent" />{t.overview.printCards}</Link>
         <button type="button" className="btn btn-primary" onClick={onStart} data-kubai-trigger>

@@ -8,7 +8,7 @@
 .cs-toc { display: flex; gap: 8px; flex-wrap: wrap; }
 .cs-toc a { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-weight: 700; box-shadow: var(--shadow-sm); transition: transform 160ms var(--ease-out); }
 .cs-toc a:hover { transform: translateY(-2px); text-decoration: none; }
-.cs-section { padding-top: 72px; display: grid; gap: 20px; }
+.cs-section { padding-top: 72px; display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; gap: 20px; }
 .cs-section > h2, .cs-h2 { display: flex; align-items: center; gap: 14px; font-size: clamp(26px, 3vw, 36px); line-height: 1.2; font-weight: 900; }
 .cs-sub { font-size: 18px; font-weight: 800; margin-top: 12px; }
 .cs-split { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow); }
@@ -86,3 +86,24 @@
   .milestone { grid-template-columns: 18px minmax(0, 1fr) auto; }
   .ms-date { grid-column: 2; grid-row: 2; font-size: 13px; }
 }
+
+.cs-route { display: block; overflow-wrap: anywhere; font-size: 12px; color: var(--text-3); }
+.cs-journey { display: flex; flex-wrap: wrap; gap: 12px; }
+.cs-journey li { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 14px; }
+@media print {
+  .public-bar, .cs-toc, .no-print, .cs-foot { display: none !important; }
+  html.js .case [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .case { max-width: none; padding: 0; font-size: 11pt; }
+  .cs-section { padding-top: 24px; }
+  .cs-head h1 { font-size: 28pt; }
+  .cs-columns, .personas, .cert-list, .cs-defs-inline { grid-template-columns: 1fr; }
+  .cs-table { table-layout: fixed; overflow-wrap: anywhere; font-size: 9pt; }
+  .cs-table tbody th { min-width: 0; }
+  .cs-split { grid-template-columns: 1fr; }
+  .cs-table-wrap { overflow: visible; }
+  .card, .cert, .persona, .cs-defs > div, .milestone, .cs-split { break-inside: avoid; box-shadow: none; }
+  h2, h3, h4 { break-after: avoid; }
+  .case * { animation: none !important; transition: none !important; }
+}
+
+.cs-section > *, .cs-columns > * { min-width: 0; }

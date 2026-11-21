@@ -45,7 +45,7 @@ export default function Assistant() {
   const [text, setText] = useState("");
   const end = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    void end.current?.scrollIntoView({ block: "end", behavior: "smooth" });
+    void end.current?.scrollIntoView({ block: "end", behavior: "auto" });
   }, [items, pending]);
   const submit = (e?: FormEvent, value = text) => {
     e?.preventDefault();
@@ -61,7 +61,7 @@ export default function Assistant() {
         <div className="actions"><Link className="btn btn-soft" to="/app/assistant"><Plus aria-hidden="true" />{t.assistant.newChat}</Link></div>
       </div>
       <div className="chat-layout">
-        <aside data-reveal className="card threads" data-lenis-prevent aria-labelledby="threads-h">
+        <aside data-reveal className="card threads" aria-labelledby="threads-h">
           <h2 id="threads-h" className="threads-h"><MessagesSquare size={22} color="#2563eb" trigger="none" />{t.assistant.history}</h2>
           {threads.length === 0 ? <p className="muted small">{t.assistant.noHistory}</p> : (
             <ul className="thread-list">

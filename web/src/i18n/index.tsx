@@ -1,3 +1,5 @@
+import { settings as settingsAr } from "./ar/settings";
+import { settings as settingsEn } from "./en/settings";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { app as appAr } from "./ar/app";
 import { auth as authAr } from "./ar/auth";
@@ -13,8 +15,8 @@ import { setPrefCookie, useBoot } from "../ssr/context";
 
 export type Lang = "ar" | "en";
 const dictionaries = {
-  ar: { ...appAr, auth: authAr, ...coursesAr, live: liveAr, ...peopleAr },
-  en: { ...appEn, auth: authEn, ...coursesEn, live: liveEn, ...peopleEn },
+  ar: { ...appAr, auth: authAr, ...coursesAr, live: liveAr, ...peopleAr, settings: settingsAr },
+  en: { ...appEn, auth: authEn, ...coursesEn, live: liveEn, ...peopleEn, settings: settingsEn },
 };
 export type Dict = (typeof dictionaries)["en"];
 

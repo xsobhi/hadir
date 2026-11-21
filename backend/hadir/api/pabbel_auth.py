@@ -69,8 +69,7 @@ def link_account(pabbel_id: str, email: str, name: str, gender: str) -> int:
     with tx() as db:
         row = db.execute("SELECT id FROM users WHERE pabbel_id = ?", (pabbel_id,)).fetchone()
         if row:
-            db.execute("UPDATE users SET name = ?, gender = CASE WHEN ? != '' THEN ? ELSE gender END WHERE id = ?",
-                       (name, gender, gender, row["id"]))
+            # Existing accounts keep their Hadir profile edits when signing in again.
             return row["id"]
         row = db.execute("SELECT id FROM users WHERE email = ? AND is_demo = 0", (email,)).fetchone()
         if row:

@@ -5,3 +5,4 @@ langgraph-checkpoint-sqlite>=2.0
 langchain-openai>=0.3
 langchain-core>=0.3
 tzdata>=2024.1
+Pillow>=11.0

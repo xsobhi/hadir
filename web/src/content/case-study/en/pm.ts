@@ -44,6 +44,7 @@ export const pmEn: CaseStudyPm = {
   milestones: [
     { name: "Charter, personas and journey map", date: "2026-11-15", status: "done" },
     { name: "MVP: scanning, register, CSV export, assistant", date: "2026-11-15", status: "done" },
+    { name: "Subject/student management, profile editor and native scrolling", date: "2026-11-21", status: "done" },
     { name: "Usability study with five professors", date: "2026-12-15", status: "next" },
     { name: "Fixes from the study", date: "2027-01-31", status: "planned" },
     { name: "Pilot starts: one course, one professor", date: "2027-02-15", status: "planned" },
@@ -96,10 +97,10 @@ export const pmEn: CaseStudyPm = {
       "The one-click demo with nine weeks of sample data makes the product easy to try.",
     ],
     improve: [
-      "No professor has used Hadir yet; the usability study has to come before new features.",
+      "No completed professor usability study is documented; the proposed pilot still needs recruitment and approval.",
       "The personas and journey map are assumptions until the study tests them.",
       "The notice critic is itself a model; a code check of numbers and dates would be stronger.",
-      "There are no automated tests yet for the attendance rules and scan results.",
+      "Record and profile regression tests are in place; attendance rules, real scanners and assistant behavior still need broader coverage.",
     ],
   },
 };
