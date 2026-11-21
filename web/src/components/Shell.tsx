@@ -1,4 +1,4 @@
-import { BookOpen, Bot, CalendarCheck, Languages, Lightbulb, Users } from "kubai-icons-react";
+import { BookOpen, Bot, CalendarCheck, Languages, Users } from "kubai-icons-react";
 import { LogOut, Menu, PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen, Plus, Settings, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useReveal } from "../motion/useReveal";
@@ -76,7 +76,6 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
       <NavLink to="/app/settings" className="nav-item" title={t.settings.heading} aria-label={t.settings.heading}>
         <Settings size={22} aria-hidden="true" /><span className="nav-label">{t.settings.heading}</span>
       </NavLink>
-      {item("/about", t.nav.caseStudy, Lightbulb, "sky")}
       <button type="button" className="nav-item" onClick={() => setLang(lang === "ar" ? "en" : "ar")} aria-label={t.languageLabel} data-kubai-trigger>
         <Languages size={22} color={TONE_COLOR.blue} trigger="parent" /><span className="nav-label">{t.language}</span>
       </button>

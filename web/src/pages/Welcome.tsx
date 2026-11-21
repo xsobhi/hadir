@@ -1,7 +1,7 @@
 import { BotSparkle, ScanBarcode, TriangleAlert } from "kubai-icons-react";
 import { Sparkles } from "lucide-react";
 import { useRef, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import type { User } from "../api/types";
 import { useAuth } from "../auth/AuthContext";
@@ -81,7 +81,6 @@ export default function Welcome() {
         </section>
         <footer className="public-foot">
           <span>{w.by}</span>
-          <Link to="/about" className="link">{w.howBuilt}</Link>
         </footer>
       </main>
     </div>

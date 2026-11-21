@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext";
 import Assistant from "./pages/Assistant";
 import Cards from "./pages/Cards";
-import CaseStudy from "./pages/CaseStudy";
 import Course from "./pages/Course";
 import Live from "./pages/Live";
 import NewCourse from "./pages/NewCourse";
@@ -29,7 +28,6 @@ export default function App() {
       <Route path="/" element={<Welcome />} />
       <Route path="/signin" element={<SignIn mode="in" />} />
       <Route path="/signup" element={<SignIn mode="up" />} />
-      <Route path="/about" element={<CaseStudy />} />
       <Route path="/app/settings" element={<Private><Settings /></Private>} />
       <Route path="/app" element={<Private><Overview /></Private>} />
       <Route path="/app/courses/new" element={<Private><NewCourse /></Private>} />

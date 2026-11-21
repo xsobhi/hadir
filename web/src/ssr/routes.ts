@@ -8,7 +8,6 @@ const RULES: Rule[] = [
   { pattern: /^\/app\/settings$/, access: "private", data: () => [shell] },
   { pattern: /^\/$/, access: "guest", data: () => [] },
   { pattern: /^\/sign(in|up)$/, access: "guest", data: () => [] },
-  { pattern: /^\/about$/, access: "public", data: () => [] },
   { pattern: /^\/app$/, access: "private", data: () => ["/api/overview", shell] },
   { pattern: /^\/app\/courses\/new$/, access: "private", data: () => [shell] },
   { pattern: /^\/app\/courses\/(\d+)$/, access: "private", data: (m) => [`/api/courses/${m[1]}`, shell] },

@@ -1,8 +1,8 @@
 # Hadir — complete website case study
 
-Live case study: https://hadir.xsobhi.com/about?lang=en
+Project website: https://hadir.xsobhi.com
 
-Arabic: https://hadir.xsobhi.com/about?lang=ar
+The public case-study page was removed on 21 November 2026 at the owner's request. This document remains as project documentation.
 
 Hadir brings course setup, student records, attendance and follow-up into one Arabic-first workspace. The design starts with a professor preparing a course and ends with a register they can review and export. This case study covers the full product, its implementation and the changes made after owner feedback.
 
@@ -125,14 +125,6 @@ Route: `/app/settings`
 Edit the local profile and upload, adjust or reset a personal picture.
 
 The crop editor supports drag, arrow keys, zoom and rotation. Only a 512 × 512 image is uploaded, and the server independently validates dimensions.
-
-### Public case study
-
-Route: `/about`
-
-Explain the whole project, connect the four certificates and show what still needs evaluation.
-
-Arabic and English versions share a structure. A print action makes the case study suitable for saving as a PDF.
 
 ## How the website works
 

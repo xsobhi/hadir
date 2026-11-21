@@ -5,7 +5,7 @@
 $ErrorActionPreference = "Stop"
 $root = "C:\hadir"
 $services = @(@{ exe = "$root\hadir-svc.exe"; xml = "hadir-svc.xml"; url = "http://127.0.0.1:3070/api/health" },
-              @{ exe = "$root\hadir-web-svc.exe"; xml = "hadir-web-svc.xml"; url = "http://127.0.0.1:3071/about" })
+              @{ exe = "$root\hadir-web-svc.exe"; xml = "hadir-web-svc.xml"; url = "http://127.0.0.1:3071/" })
 New-Item -ItemType Directory -Force -Path "$root\data" | Out-Null
 
 foreach ($s in $services) { if (Test-Path $s.exe) { & $s.exe stop 2>&1 | Out-Null } }

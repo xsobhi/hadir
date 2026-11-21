@@ -55,6 +55,10 @@ const escapeJson = (v) => JSON.stringify(v).replace(/[<\u2028\u2029]/g, (c) => "
 const escapeHtml = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 async function page(req, res, url) {
+  if (/^\/about\/*$/.test(url.pathname)) {
+    res.writeHead(410, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" });
+    return res.end("This page has been removed.");
+  }
   const route = matchRoute(url.pathname);
   if (!route) { res.writeHead(302, { Location: "/" }); return res.end(); }
   const data = await fetchData(route.data, req);

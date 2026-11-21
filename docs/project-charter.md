@@ -51,7 +51,7 @@ of paper.
   attendance, deleted automatically after 48 hours.
 - The LangGraph assistant with its approval gate and reflection loop (see `agent-design.md`).
 - Printable test ID cards for trying the scanner.
-- This charter, `ux-case-study.md`, `agent-design.md` and the in-app case study page.
+- This charter, `ux-case-study.md`, `agent-design.md` and `website-case-study.md`.
 
 ## Success criteria
 

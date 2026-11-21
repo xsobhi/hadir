@@ -136,5 +136,5 @@ pilot starting 2027-02-15 (see `project-charter.md`).
 
 ## Full website update, 2026-11-21
 
-See [the complete website case study](website-case-study.md) for all 14 screens, profile editing,
+See [the complete website case study](website-case-study.md) for the application screens, profile editing,
 record management, architecture, feedback, validation and remaining limits.
